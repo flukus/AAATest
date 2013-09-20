@@ -8,3 +8,6 @@ src/example/TrueUnit.ExampleProj/bin/
 src/example/TrueUnit.ExampleProj/obj/
 src/example/TrueUnit.ExampleTests/bin/
 src/example/TrueUnit.ExampleTests/obj/
+src/test/TrueUnit.Test/bin/
+src/test/TrueUnit.Test/obj/
+*.suo
