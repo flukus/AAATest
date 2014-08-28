@@ -11,3 +11,15 @@ src/example/TrueUnit.ExampleTests/obj/
 src/test/TrueUnit.Test/bin/
 src/test/TrueUnit.Test/obj/
 *.suo
+src/example/AAATest.ExampleProj/bin/
+src/example/AAATest.ExampleProj/obj/
+src/app/AAATest/obj/
+src/app/AAATest/bin/
+src/example/AAATest.ExampleTests/bin/
+src/test/AAATest.Test/bin/
+src/test/AAATest.Test/obj/
+src/example/AAATest.ExampleTests/obj/
+src/app/AAATest.Console/bin/
+packages/
+src/app/AAATest.Console/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+src/app/AAATest.Console/obj/
