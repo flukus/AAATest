@@ -32,12 +32,14 @@ namespace AAATest.ExampleProj {
 			return new ViewResult(vm);
 		}
 
+
+		public ActionResult Edit(int id) {
+			return null;
+		}
+
 		public ActionResult List() {
 			return null;
 		}
 
-		public ActionResult Edit() {
-			return null;
-		}
 	}
 }

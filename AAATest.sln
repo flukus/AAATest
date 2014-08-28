@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAATest.ExampleTests", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAATest.Test", "src\test\AAATest.Test\AAATest.Test.csproj", "{28FC1070-BD3B-4B4A-8099-BC174D96D13F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{63695813-B9E6-4B50-A217-BFF70CBFBBFB}"
+	ProjectSection(SolutionItems) = preProject
+		wiki\Home.md = wiki\Home.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
