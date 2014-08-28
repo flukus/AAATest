@@ -15,5 +15,16 @@ namespace AAATest
 			// TODO: Complete member initialization
 			this.Result = result;
 		}
+
+		public Assert<T> Equal<TCompare>(Func<T, TCompare> actual, TCompare expected) {
+			object actualObj = actual(Result);
+			if (actualObj == null && expected == null)
+				throw new Exception(string.Format("Expected '{0}' but was null", expected.ToString()));
+			if (!actualObj.Equals(expected))
+				throw new Exception(string.Format("Expected '{0}' but was {1}", expected.ToString(), actualObj.ToString()));
+
+			return this;
+		}
+
 	}
 }
