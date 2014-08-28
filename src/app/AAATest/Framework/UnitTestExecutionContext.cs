@@ -55,12 +55,20 @@ namespace AAATest.Framework {
 		}
 
 		public override void Act(Action<T> action) {
-			action((T)Unit);
-			ExpectVoidResult = true;
+			try {
+				action((T)Unit);
+				ExpectVoidResult = true;
+			} catch (Exception e) {
+				Result = e;
+			}
 		}
 
 		public override void Act<A>(Func<T, A> action) {
-			Result = action((T)Unit);
+			try {
+				Result = action((T)Unit);
+			} catch (Exception e) {
+				Result = e;
+			}
 		}
 
 		public override void Assert() {
@@ -90,15 +98,25 @@ namespace AAATest.Framework {
 		}
 
 		public override void AssertException(string message) {
-			throw new NotImplementedException();
+			var exception = Result as Exception;
+			if (exception == null)
+				throw new Exception("Expected exception but none was thrown");
 		}
 
 		public override void AssertException<TException>() {
-			throw new NotImplementedException();
+			var exception = Result as Exception;
+			if (exception == null || Result == null)
+				throw new Exception("Expected exception but none was thrown");
+			var texception = Result as Exception;
+			if (texception == null)
+				throw new Exception(string.Format("Expected exception of type '{0}' but type was '{1}'", typeof(TException).FullName, Result.GetType().FullName));
 		}
 
 		public override void AssertException<TException>(string message) {
-			throw new NotImplementedException();
+			AssertException<TException>();
+			var exception = Result as Exception;
+			if (exception.Message != message)
+				throw new Exception(string.Format("Expected exception of with message '{0}' but message was '{1}'", message, exception.Message));
 		}
 	}
 }

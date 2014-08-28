@@ -82,10 +82,8 @@
     <Compile Include="Assert.cs" />
     <Compile Include="AssertEqual.cs" />
     <Compile Include="Framework\ReflectionUtil.cs" />
-    <Compile Include="Framework\IAAATest.cs" />
     <Compile Include="Framework\Stub.cs" />
     <Compile Include="Framework\StubCollection.cs" />
-    <Compile Include="Framework\TestHelper.cs" />
     <Compile Include="Framework\UnitTestExecutionContext.cs" />
     <Compile Include="Framework\UnitTestSuiteOptions.cs" />
     <Compile Include="Framework\UnitTestSuite.cs" />

@@ -33,9 +33,4 @@ namespace AAATest.ExampleProj
 	  return new ViewResult() { DataItem = dataItem };
 	}
   }
-
-  public class ViewResult{
-
-	public object DataItem { get; set; }
-  }
 }

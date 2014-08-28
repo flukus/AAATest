@@ -42,8 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependencies\ActionResult.cs" />
+    <Compile Include="Dependencies\IRepository.cs" />
     <Compile Include="Dependencies\ISession.cs" />
     <Compile Include="Dependencies\Product.cs" />
+    <Compile Include="Dependencies\ProductViewVM.cs" />
     <Compile Include="Dependencies\User.cs" />
     <Compile Include="Dependencies\UserViewVM.cs" />
     <Compile Include="ProductController.cs" />

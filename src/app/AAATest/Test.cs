@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AAATest.Framework;
 
 namespace AAATest {
-	public abstract class Test<T> : IAAATest<T>
+	public abstract class Test<T>
 		where T : class {
 
 		public virtual Mock<Y> Arrange<Y>() where Y : class {
@@ -50,11 +50,11 @@ namespace AAATest {
 			throw new NotImplementedException();
 		}
 
-		public virtual void AssertException<TException>() {
+		public virtual void AssertException<TException>() where TException : Exception {
 			throw new NotImplementedException();
 		}
 
-		public virtual void AssertException<TException>(string message) {
+		public virtual void AssertException<TException>(string message) where TException : Exception {
 			throw new NotImplementedException();
 		}
 	}

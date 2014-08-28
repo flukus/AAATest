@@ -13,6 +13,7 @@ namespace AAATest.ExampleTests
 	public class UserControllerTest :
 		Test<UserController>
 	{
+		/*
 		public void TestViewLoadsDataFromISession()
 		{
 			var id = Guid.NewGuid();
@@ -44,5 +45,6 @@ namespace AAATest.ExampleTests
 			Act(x => x.View(Guid.NewGuid()));
 			AssertException("Could not find user");
 		}
+		 */
 	}
 }
