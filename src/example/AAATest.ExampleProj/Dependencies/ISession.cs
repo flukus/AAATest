@@ -10,7 +10,7 @@ namespace AAATest.ExampleProj.Dependencies
   {
 		//IQueryable<T> Query<T>();
 		T GetById<T>(Guid id);
-		User GetCurrentUser();
+		UserProfile GetCurrentUser();
   }
 
   public class TestQueryable<T> : IQueryable<T>

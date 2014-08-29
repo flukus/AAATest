@@ -46,8 +46,10 @@
     <Compile Include="Dependencies\IRepository.cs" />
     <Compile Include="Dependencies\ISession.cs" />
     <Compile Include="Dependencies\Product.cs" />
+    <Compile Include="Dependencies\ProductEditVM.cs" />
     <Compile Include="Dependencies\ProductViewVM.cs" />
     <Compile Include="Dependencies\User.cs" />
+    <Compile Include="Dependencies\UserProfile.cs" />
     <Compile Include="Dependencies\UserViewVM.cs" />
     <Compile Include="ProductController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

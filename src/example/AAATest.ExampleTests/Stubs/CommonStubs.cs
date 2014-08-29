@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AAATest.ExampleProj.Dependencies;
 using Moq;
-using AAATest.ExampleTests.Data;
 using AAATest;
 
 namespace AAATest.ExampleTests.Stubs
@@ -17,7 +16,7 @@ namespace AAATest.ExampleTests.Stubs
 		void IStub<ISession>.Stub(Mock<ISession> stub)
 		{
 			var dm = new DataManager();
-			DefaultUser = new User { Id = Guid.NewGuid(), Name = "frank" };
+			DefaultUser = new User { Id = 7, Name = "frank" };
 
 			//stub.Setup(x => x.Query<User>())
 			//.Returns(dm.Get<EmptyUserList>().AsQueryable());

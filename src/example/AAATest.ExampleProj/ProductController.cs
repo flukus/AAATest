@@ -34,6 +34,8 @@ namespace AAATest.ExampleProj {
 
 
 		public ActionResult Edit(int id) {
+			if (id <= 0)
+				throw new ArgumentException(string.Format("id must be provided. Provided value was: '{0}'", id));
 			return null;
 		}
 

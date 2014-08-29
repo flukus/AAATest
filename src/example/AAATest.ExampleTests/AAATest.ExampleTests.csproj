@@ -45,8 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\DefaultUser.cs" />
-    <Compile Include="Data\DefaultUserList.cs" />
     <Compile Include="ProductController_Edit.cs" />
     <Compile Include="ProductController_View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +64,9 @@
       <Project>{0aa866b4-cc23-475a-8bc2-d04d0d9303de}</Project>
       <Name>AAATest.ExampleProj</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

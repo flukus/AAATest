@@ -62,6 +62,8 @@ namespace AAATest.Framework
 
 				if (e.GetType() == typeof(AssertException))
 					return new TestCompletedInfo { Result = TestResult.Failed, ErrorName = "Assert Failure", ErrorMessage = e.Message, StackTrace = outerException.StackTrace };
+				else if (e.GetType().Name == "MockVerificationException")
+					return new TestCompletedInfo { Result = TestResult.Failed, ErrorName = "Assert Failure", ErrorMessage = e.Message, StackTrace = topMostException.InnerException.StackTrace };
 				else
 					//TODO: should include full trace of all errors
 					return new TestCompletedInfo { Result = TestResult.FrameworkError, ErrorName = topMostException.GetType().Name, ErrorMessage = topMostException.Message, StackTrace = topMostException.StackTrace };
