@@ -81,9 +81,12 @@
   <ItemGroup>
     <Compile Include="Assert.cs" />
     <Compile Include="AssertEqual.cs" />
+    <Compile Include="Framework\Exceptions\AssertException.cs" />
     <Compile Include="Framework\ReflectionUtil.cs" />
     <Compile Include="Framework\Stub.cs" />
     <Compile Include="Framework\StubCollection.cs" />
+    <Compile Include="Framework\ITestOutput.cs" />
+    <Compile Include="Framework\TestResult.cs" />
     <Compile Include="Framework\UnitTestExecutionContext.cs" />
     <Compile Include="Framework\UnitTestSuiteOptions.cs" />
     <Compile Include="Framework\UnitTestSuite.cs" />
