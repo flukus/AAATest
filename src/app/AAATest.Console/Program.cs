@@ -13,7 +13,7 @@ namespace AAATest.Console
 	{
 		static void Main(string[] args)
 		{
-			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection());
+			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection(), new ConsoleListener());
 			suite.Init(null, typeof(UserControllerTest).Assembly);
 			suite.Execute();
 			System.Console.ReadLine();

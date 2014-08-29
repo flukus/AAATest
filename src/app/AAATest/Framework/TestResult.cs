@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace AAATest.Framework {
 	public class TestCompletedInfo {
 		public TestResult Result { get; set; }
-		public string Message { get; set; }
-
-		//TODO: include whole exception or stack trace?
+		public string ErrorName { get; set; }
+		public string ErrorMessage { get; set; }
 		public string StackTrace { get; set; }
-		public Exception Exception { get; set; }
 	}
 
 	public enum TestResult {

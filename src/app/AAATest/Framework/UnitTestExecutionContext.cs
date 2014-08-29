@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AAATest.Framework.Exceptions;
 using Castle.DynamicProxy;
 using Moq;
 using Moq.Language.Flow;
@@ -21,7 +22,7 @@ namespace AAATest.Framework {
 		private bool ExpectVoidResult;
 		private object Result { get; set; }
 
-		public UnitTestExecutionContext(object unit, DependencyManager depManager, ReflectionUtil refHelp) {
+		public UnitTestExecutionContext(object unit, DependencyManager depManager) {
 
 			Unit = unit;
 			DependencyManager = depManager;
@@ -78,16 +79,16 @@ namespace AAATest.Framework {
 
 		public override Assert<Z> Assert<Y, Z>(Func<Y, object> func) {
 			if (Result == null)
-				throw new NullReferenceException("Execution Result was null");
+				throw new AssertException("Execution Result was null");
 			var typedResult = Result as Y;
 			if (typedResult == null)
-				throw new InvalidCastException(string.Format("Execution Result was not of type {0}", typeof(Y)));
+				throw new AssertException(string.Format("Execution Result was not of type {0}", typeof(Y)));
 			var funcResult = func(typedResult);
 			if (funcResult == null)
-				throw new NullReferenceException("Nested execution Result was null");
+				throw new AssertException("Nested execution Result was null");
 			var typedFuncResult = funcResult as Z;
 			if (typedFuncResult == null)
-				throw new InvalidCastException(string.Format("Nested execution Result was not of type {0}", typeof(Y)));
+				throw new AssertException(string.Format("Nested execution Result was not of type {0}", typeof(Y)));
 			return new Assert<Z>(typedFuncResult);
 			
 		}
@@ -100,23 +101,23 @@ namespace AAATest.Framework {
 		public override void AssertException(string message) {
 			var exception = Result as Exception;
 			if (exception == null)
-				throw new Exception("Expected exception but none was thrown");
+				throw new AssertException("Expected exception but none was thrown");
 		}
 
 		public override void AssertException<TException>() {
 			var exception = Result as Exception;
 			if (exception == null || Result == null)
-				throw new Exception("Expected exception but none was thrown");
+				throw new AssertException("Expected exception but none was thrown");
 			var texception = Result as Exception;
 			if (texception == null)
-				throw new Exception(string.Format("Expected exception of type '{0}' but type was '{1}'", typeof(TException).FullName, Result.GetType().FullName));
+				throw new AssertException(string.Format("Expected exception of type '{0}' but type was '{1}'", typeof(TException).FullName, Result.GetType().FullName));
 		}
 
 		public override void AssertException<TException>(string message) {
 			AssertException<TException>();
 			var exception = Result as Exception;
 			if (exception.Message != message)
-				throw new Exception(string.Format("Expected exception of with message '{0}' but message was '{1}'", message, exception.Message));
+				throw new AssertException(string.Format("Expected exception of with message '{0}' but message was '{1}'", message, exception.Message));
 		}
 	}
 }

@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using AAATest.Framework;
 
-namespace TrueUnit.Framework {
-	interface ITestOutput {
+namespace AAATest.Framework {
+	public interface ITestResultListener {
 		void TestStarted(string testName);
-		void TestFinished(TestResult result);
+		void TestComplete(TestCompletedInfo result);
+		void AllTestsComplete();
 	}
 }

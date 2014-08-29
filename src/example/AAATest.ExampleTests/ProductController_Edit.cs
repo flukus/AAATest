@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AAATest;
 using AAATest.ExampleProj;
 
-namespace TrueUnit.ExampleTests {
+namespace AAATest.ExampleTests {
 	public class ProductController_Edit : Test<ProductController> {
 
 		public void ExceptionWhenId0() {

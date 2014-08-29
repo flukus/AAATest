@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
+using AAATest.Framework;
 
 namespace AAATest.Framework
 {
@@ -14,11 +15,13 @@ namespace AAATest.Framework
 		//uut = unit under test
 		private readonly ReflectionUtil RefUtil;
 		private readonly StubCollection Stubs;
+		private readonly ITestResultListener Listener;
 		private readonly List<UnitTest> UnitTests;
 
-		public UnitTestSuite(ReflectionUtil util, StubCollection stubs) {
+		public UnitTestSuite(ReflectionUtil util, StubCollection stubs, ITestResultListener listener) {
 			RefUtil = util;
 			Stubs = stubs;
+			Listener = listener;
 			UnitTests = new List<UnitTest>();
 		}
 
@@ -47,8 +50,13 @@ namespace AAATest.Framework
 
 		public void Execute()
 		{
-			foreach (var test in UnitTests)
-				test.Execute();
+			foreach (var test in UnitTests) {
+				Listener.TestStarted(string.Format("{0}.{1}", test.TestClass.Name, test.TestMethod.Name));
+				var result = test.Execute();
+				Listener.TestComplete(result);
+			}
+
+			Listener.AllTestsComplete();
 		}
 
 		public void FindStubs(IEnumerable<Type> allTypes)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AAATest.Framework.Exceptions;
 using Castle.DynamicProxy;
 
 namespace AAATest.Framework
@@ -45,13 +46,25 @@ namespace AAATest.Framework
 
 				//execute the test
 				var interceptorType = RefUtil.CreateGenericType(typeof(UnitTestExecutionContext<>), UnitType);
-				var interceptor = RefUtil.CreateTypeWithArguments(interceptorType, uut, DependencyManager, RefUtil);
+				var interceptor = RefUtil.CreateTypeWithArguments(interceptorType, uut, DependencyManager);
 				var proxy = generator.CreateClassProxy(TestClass, interceptor as IInterceptor);
 				RefUtil.InvokeMethod(proxy, TestMethod);
 
 				return new TestCompletedInfo { Result = TestResult.Passed };
 			} catch (Exception e) { //TODO: catch more exception types here
-				return new TestCompletedInfo { Result = TestResult.FrameworkError, Message = e.Message, Exception = e };
+				//not interested in targetInvocationExceptions, it's just a wrapper around the real one, only use that if it's the inner most exception
+				//need the second top most stacktrace, which contains the user relevant exception
+				//Method.invoke doesn't throw the original section and makes life a pain in the ass, would rather have this logic in listener
+				Exception topMostException = e;
+				Exception outerException = e;
+				while (e.GetType() == typeof(TargetInvocationException) && e.InnerException != null)
+					e = e.InnerException;
+
+				if (e.GetType() == typeof(AssertException))
+					return new TestCompletedInfo { Result = TestResult.Failed, ErrorName = "Assert Failure", ErrorMessage = e.Message, StackTrace = outerException.StackTrace };
+				else
+					//TODO: should include full trace of all errors
+					return new TestCompletedInfo { Result = TestResult.FrameworkError, ErrorName = topMostException.GetType().Name, ErrorMessage = topMostException.Message, StackTrace = topMostException.StackTrace };
 			}
 		}
 

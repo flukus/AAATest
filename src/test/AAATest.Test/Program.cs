@@ -12,10 +12,10 @@ namespace AAATest.Test
 	{
 		static void Main(string[] args)
 		{
-			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection());
-			suite.Init(null, typeof(Program).Assembly);
-			suite.Execute();
-			System.Console.ReadLine();
+			//var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection());
+			//suite.Init(null, typeof(Program).Assembly);
+			//suite.Execute();
+			//System.Console.ReadLine();
 		}
 	}
 }

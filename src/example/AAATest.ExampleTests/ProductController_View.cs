@@ -8,7 +8,7 @@ using AAATest.ExampleProj;
 using AAATest.ExampleProj.Dependencies;
 using Moq;
 
-namespace TrueUnit.ExampleTests {
+namespace AAATest.ExampleTests {
 	public class ProductController_View : Test<ProductController> {
 
 		public void ExceptionWhenId0() {
