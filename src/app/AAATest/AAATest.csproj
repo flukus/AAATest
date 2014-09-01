@@ -82,6 +82,7 @@
     <Compile Include="Assert.cs" />
     <Compile Include="AssertEqual.cs" />
     <Compile Include="Framework\Exceptions\AssertException.cs" />
+    <Compile Include="Framework\Exceptions\TestException.cs" />
     <Compile Include="Framework\ReflectionUtil.cs" />
     <Compile Include="Framework\Stub.cs" />
     <Compile Include="Framework\StubCollection.cs" />

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AAATest.Framework.Exceptions;
+using AAAUnit.Framework.Exceptions;
 using Castle.DynamicProxy;
 using Moq;
 using Moq.Language.Flow;
@@ -55,6 +56,11 @@ namespace AAATest.Framework {
 			return setup;
 		}
 
+		public override Y GetMocked<Y>() {
+			var mock = DependencyManager.GetMock<Y>();
+			return mock.Object;
+		}
+
 		public override void Act(Action<T> action) {
 			try {
 				action((T)Unit);
@@ -73,11 +79,13 @@ namespace AAATest.Framework {
 		}
 
 		public override void Assert() {
+			CheckException();
 			foreach (var mock in DependencyManager.AllMocks())
 				mock.Verify();
 		}
 
 		public override Assert<Z> Assert<Y, Z>(Func<Y, object> func) {
+			CheckException();
 			if (Result == null)
 				throw new AssertException("Execution Result was null");
 			var typedResult = Result as Y;
@@ -94,8 +102,15 @@ namespace AAATest.Framework {
 		}
 
 		public override Assert<Y> Assert<Y>() {
+			CheckException();
 			Y result = (Y)Result;
 			return new Assert<Y>(result);
+		}
+
+		public void CheckException() {
+			var exception = Result as Exception;
+			if (exception != null)
+				throw new TestException("Error during act", exception);
 		}
 
 		public override void AssertException(string message) {

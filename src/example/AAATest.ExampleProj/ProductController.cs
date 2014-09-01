@@ -36,7 +36,18 @@ namespace AAATest.ExampleProj {
 		public ActionResult Edit(int id) {
 			if (id <= 0)
 				throw new ArgumentException(string.Format("id must be provided. Provided value was: '{0}'", id));
-			return null;
+			var product = Repository.GetById<Product>(id);
+
+			var user = Session.GetCurrentUser();
+			if (user.UserId != product.ManagedBy.Id)
+				throw new Exception("You do not have permission to edit that product");
+
+			return new ViewResult() {
+				DataItem = new ProductEditVM {
+					ProductId = product.Id,
+					ProductName = product.Name
+				}
+			};
 		}
 
 		public ActionResult List() {

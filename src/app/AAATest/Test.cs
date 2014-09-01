@@ -57,6 +57,8 @@ namespace AAATest {
 		public virtual void AssertException<TException>(string message) where TException : Exception {
 			throw new NotImplementedException();
 		}
+
+		public virtual Y GetMocked<Y>() where Y : class { throw new NotImplementedException(); }
 	}
 
 }

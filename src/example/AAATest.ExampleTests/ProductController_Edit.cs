@@ -29,10 +29,12 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void CurrentUserFromSession() {
+			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+				.Returns(new Product { ManagedBy = new User { } });
 			Arrange((ISession x) => x.GetCurrentUser())
 				.Returns(new UserProfile())
 				.Verifiable();
-			Act(x => x.View(98));
+			Act(x => x.Edit(98));
 			Assert();
 		}
 
@@ -40,8 +42,32 @@ namespace AAATest.ExampleTests {
 			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
 				.Returns(new Product() { ManagedBy = new User { Id = 27 } });
 			Arrange((ISession x) => x.GetCurrentUser()).Returns(new UserProfile() { UserId = 23 });
-			Act(x => x.View(99));
+			Act(x => x.Edit(99));
 			AssertException("You do not have permission to edit that product");
+		}
+
+		public void ResultFromReturnedObject() {
+			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+				.Returns(new Product { Id = 76, Name = "Super Awesome Gizmo", ManagedBy = new User() });
+			Arrange((ISession x) => x.GetCurrentUser()).Returns(new UserProfile());
+			Act(x => x.Edit(76));
+			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
+				.Equal(x => x.ProductName, "Super Awesome Gizmo")
+				.Equal(x => x.ProductId, 76);
+		}
+
+		public void AvoidsLazyLoadingProductManager() {
+			//TODO: need syntax to handle new mock
+			Arrange((IRepository x) => x.Query<Product>())
+				.Returns(GetMocked<IQuery<Product>>());
+			Arrange((IQuery<Product> x) => x.Include<User>(It.IsAny<Func<Product, User>>()))
+				.Returns(GetMocked<IQuery<Product>>()).Verifiable();
+			Arrange((IQuery<Product> x) => x.Where(It.IsAny<Func<Product, bool>>()))
+				.Returns(GetMocked<IQuery<Product>>());
+			Arrange((IQuery<Product> x) => x.First())
+				.Returns(new Product { ManagedBy = new User { } });
+			Act(x => x.Edit(31));
+			Assert();
 		}
 	}
 }

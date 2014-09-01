@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrueUnit.ExampleProj.Dependencies {
+namespace AAATest.ExampleProj.Dependencies {
 	public class ProductEditVM {
 		public int ProductId { get; set; }
 		public string ProductName { get; set; }

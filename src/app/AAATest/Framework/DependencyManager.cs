@@ -15,13 +15,11 @@ namespace AAATest.Framework
 		{
 		}
 
-		public Mock<T> GetMock<T>() where T : class
-		{
+		public Mock<T> GetMock<T>() where T : class {
 			var type = typeof(T);
-			if (Mocks[type] != null)
+			if (Mocks.ContainsKey(type))
 				return Mocks[type] as Mock<T>;
-			else
-			{
+			else {
 				var mock = new Mock<T>();
 				Mocks[type] = mock;
 				return mock;

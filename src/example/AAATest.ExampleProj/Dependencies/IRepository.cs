@@ -7,5 +7,12 @@ using System.Threading.Tasks;
 namespace AAATest.ExampleProj.Dependencies {
 	public interface IRepository {
 		T GetById<T>(int id);
+		IQuery<T> Query<T>();
+	}
+
+	public interface IQuery<T> {
+		IQuery<T> Include<Y>(Func<T, Y> func);
+		IQuery<T> Where(Func<T, bool> func);
+		T First();
 	}
 }
