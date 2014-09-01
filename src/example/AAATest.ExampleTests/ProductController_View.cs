@@ -37,7 +37,8 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void ResultFromReturnedObject() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>())).Returns(new Product { Id = 76, Name = "Super Awesome Gizmo" });
+			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+				.Returns(new Product { Id = 76, Name = "Super Awesome Gizmo" });
 			Act(x => x.View(76));
 			Assert<ViewResult, ProductViewVM>(x => x.DataItem)
 				.Equal(x => x.ProductName, "Super Awesome Gizmo")
