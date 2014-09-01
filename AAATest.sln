@@ -18,6 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{63695813-B
 		wiki\Home.md = wiki\Home.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TDD Example", "TDD Example", "{D567BAE2-1046-46E8-B3BA-456C521F4233}"
+	ProjectSection(SolutionItems) = preProject
+		wiki\TDD Example\01 - Simple Tests.md = wiki\TDD Example\01 - Simple Tests.md
+		wiki\TDD Example\02 - A little more.md = wiki\TDD Example\02 - A little more.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +53,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D567BAE2-1046-46E8-B3BA-456C521F4233} = {63695813-B9E6-4B50-A217-BFF70CBFBBFB}
 	EndGlobalSection
 EndGlobal

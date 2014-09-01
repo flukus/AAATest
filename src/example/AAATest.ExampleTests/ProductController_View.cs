@@ -9,7 +9,7 @@ using AAATest.ExampleProj.Dependencies;
 using Moq;
 
 namespace AAATest.ExampleTests {
-	public class ProductController_View : Test<ProductController> {
+	public class ProductController_View : TestFixture<ProductController> {
 
 		public void ExceptionWhenId0() {
 			Act(x => x.View(0));

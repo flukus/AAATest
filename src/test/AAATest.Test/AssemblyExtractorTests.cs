@@ -9,7 +9,7 @@ using AAATest.Framework;
 
 namespace AAATest.ExampleTests
 {
-	public class AssemblyExtractorTests : Test<ReflectionUtil>
+	public class AssemblyExtractorTests : TestFixture<ReflectionUtil>
 	{
 
 		public void TestTestsForwardedToClassExtractor()

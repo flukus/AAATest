@@ -31,9 +31,9 @@ namespace AAATest.Framework
 				allClasses.AddRange(ass.GetTypes());
 
 			FindStubs(allClasses);
-			var testClasses = RefUtil.FindClassesByBaseType(allClasses, typeof(Test<>));
+			var testClasses = RefUtil.FindClassesByBaseType(allClasses, typeof(TestFixture<>));
 			foreach (var test in testClasses) {
-				var uutType = RefUtil.GetGenericParameterOfBaseType(test, typeof(Test<>));
+				var uutType = RefUtil.GetGenericParameterOfBaseType(test, typeof(TestFixture<>));
 				var tests = RefUtil.GetPublicMethods(test);
 				foreach (var method in tests) {
 					//var testObj = CreateTestObject(test);

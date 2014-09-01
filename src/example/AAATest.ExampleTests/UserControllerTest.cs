@@ -11,7 +11,7 @@ using AAATest.ExampleProj;
 namespace AAATest.ExampleTests
 {
 	public class UserControllerTest :
-		Test<UserController>
+		TestFixture<UserController>
 	{
 		/*
 		public void TestViewLoadsDataFromISession()

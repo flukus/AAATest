@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AAATest.Framework;
 
 namespace AAATest {
-	public abstract class Test<T>
+	public abstract class TestFixture<T>
 		where T : class {
 
 		public virtual Mock<Y> Arrange<Y>() where Y : class {

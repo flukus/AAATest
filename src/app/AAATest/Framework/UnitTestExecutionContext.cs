@@ -11,7 +11,7 @@ using Moq;
 using Moq.Language.Flow;
 
 namespace AAATest.Framework {
-	class UnitTestExecutionContext<T> : Test<T>, IInterceptor where T : class {
+	class UnitTestExecutionContext<T> : TestFixture<T>, IInterceptor where T : class {
 
 		private readonly DependencyManager DependencyManager;
 
@@ -34,7 +34,7 @@ namespace AAATest.Framework {
 			//only intercept methods declared on Test<>
 			var type = invocation.MethodInvocationTarget.DeclaringType;
 			var method = invocation.MethodInvocationTarget;
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Test<>)) {
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TestFixture<>)) {
 				//this inherits from Test<T> but is not a proxy itself, so we can redirect these method invocations to this
 				invocation.ReturnValue = method.Invoke(this, invocation.Arguments);
 			} else
