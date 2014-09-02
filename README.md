@@ -3,13 +3,13 @@ AAATest
 
 AAATest is a (pure) unit test framework that aims to take the tedium out of testing.
 
-It is built with the arrange, act, assert pattern front and center to make tests more self documenting.
+It is built with the arrange, act, assert pattern front and centre to make tests more self documenting.
 
-It is built with dependency injection in mind, dependency and moq management make tests simple to create.
+It is built with dependency injection in mind, dependency and mock management make tests simple to create.
 
 It produces more readable, more maintainable tests with less code*.
 
-It is not suiteable for integration tests, integration testing has developed in it's own direction over the years and there are much better tools (SpecFlow).
+It is not suitable for integration tests, integration testing has developed in it's own direction over the years and there are much better tools (SpecFlow).
 
 
 Quick Example
