@@ -13,15 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAATest.ExampleTests", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAATest.Test", "src\test\AAATest.Test\AAATest.Test.csproj", "{28FC1070-BD3B-4B4A-8099-BC174D96D13F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{63695813-B9E6-4B50-A217-BFF70CBFBBFB}"
-	ProjectSection(SolutionItems) = preProject
-		wiki\Home.md = wiki\Home.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiki", "wiki\Wiki.csproj", "{7EE163B1-51F5-439A-9373-E25340340E42}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TDD Example", "TDD Example", "{D567BAE2-1046-46E8-B3BA-456C521F4233}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{81BE03A5-A1FA-41B7-8DDF-3C94F01C35D4}"
 	ProjectSection(SolutionItems) = preProject
-		wiki\TDD Example\01 - Simple Tests.md = wiki\TDD Example\01 - Simple Tests.md
-		wiki\TDD Example\02 - A little more.md = wiki\TDD Example\02 - A little more.md
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
@@ -50,11 +48,10 @@ Global
 		{28FC1070-BD3B-4B4A-8099-BC174D96D13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28FC1070-BD3B-4B4A-8099-BC174D96D13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28FC1070-BD3B-4B4A-8099-BC174D96D13F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE163B1-51F5-439A-9373-E25340340E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE163B1-51F5-439A-9373-E25340340E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{D567BAE2-1046-46E8-B3BA-456C521F4233} = {63695813-B9E6-4B50-A217-BFF70CBFBBFB}
 	EndGlobalSection
 EndGlobal
