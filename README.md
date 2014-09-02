@@ -38,7 +38,7 @@ These are complete tests, no previous setup was required:
 Tutorial
 --------
 
-For a more complete example, read through the [TDD with AAATest tutorial](wiki/01---Welcome-to-TDD)
+For a more complete example, read through the [TDD with AAATest tutorial](https://github.com/flukus/AAATest/wiki/01---Welcome-to-TDD)
 
 
 
