@@ -7,8 +7,8 @@
     <ProjectGuid>{0AA866B4-CC23-475A-8BC2-D04D0D9303DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TrueUnit.ExampleProj</RootNamespace>
-    <AssemblyName>TrueUnit.ExampleProj</AssemblyName>
+    <RootNamespace>AAATest.ExampleProj</RootNamespace>
+    <AssemblyName>AAATest.ExampleProj</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>

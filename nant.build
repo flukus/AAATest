@@ -1,18 +1,36 @@
 <?xml version="1.0"?>
 <project name="AAATest" default="test" >
 
+
+	<!-- include local settings if it exists -->
+	<include buildfile="local.settings" failonerror="false" />
+
+	<!-- properties for the local machine -->
+	<property name="MSBuild" value="msbuild" overwrite="false" />
+
 	<property name="debug" value="true" overwrite="false" />
+
+	<echo message="MSBuild ${MSBuild}" />
 
 	<target name="init" >
 		<mkdir dir="build" />
 	</target>
 
+	<target name="clean" >
+		<delete dir="build" />
+		<exec program="${MSBuild}">
+			<arg value="/Target:clean" />
+		</exec>
+	</target>
+
+
 	<target name="build" >
-		<echo message="build" />
+		<exec program="${MSBuild}" />
 	</target>
 
 	<target name="test" depends="build" >
 		<echo message="test" />
+		<exec program="src\app\AAATest.Console\bin\debug\AAATest.Console.exe" />
 	</target>
 
 	<target name="deploy" depends="build,test" >
