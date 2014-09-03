@@ -1,4 +1,6 @@
 
+build: off
+
 build_script
 	- git submodule update --init
 	- nant.bat deploy
