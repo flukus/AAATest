@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using AAATest.Framework;
-using AAATest.ExampleTests;
 
 namespace AAATest.Console
 {
@@ -14,7 +10,11 @@ namespace AAATest.Console
 		static void Main(string[] args)
 		{
 			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection(), new ConsoleListener());
-			suite.Init(null, typeof(UserControllerTest).Assembly);
+			System.Console.WriteLine(Environment.CurrentDirectory);
+			var path = Path.GetFullPath("build\\example\\ExampleTests.dll");
+			System.Console.WriteLine(path );
+			var ass = Assembly.LoadFile(path);
+			suite.Init(null, ass);
 			suite.Execute();
 
 		}
