@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="AAATest" default="test" >
+
+	<property name="debug" value="true" overwrite="false" />
+
+	<target name="init" >
+		<mkdir dir="build" />
+	</target>
+
+	<target name="build" >
+		<echo message="build" />
+	</target>
+
+	<target name="test" depends="build" >
+		<echo message="test" />
+	</target>
+
+	<target name="deploy" depends="build,test" >
+		<echo message="deploy" />
+	</target>
+
+</project>
