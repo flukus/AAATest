@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{4C618662-176D-41F4-85E5-1B737086C849}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		local.settings = local.settings
 		nant.bat = nant.bat
 		nant.build = nant.build
 	EndProjectSection

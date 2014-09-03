@@ -27,8 +27,17 @@ namespace AAATest.Framework
 
 		public void Init(UnitTestSuiteOptions options, params Assembly[] assemblies) {
 			var allClasses = new List<Type>();
-			foreach (var ass in assemblies)
-				allClasses.AddRange(ass.GetTypes());
+			foreach (var ass in assemblies) {
+				System.Console.WriteLine("ScanningAssembly " + ass.FullName);
+				Type[] types = null;
+				try {
+					types = ass.GetTypes();
+				} catch (ReflectionTypeLoadException e) {
+					types = e.Types.Where(x => x != null).ToArray();
+				}
+				allClasses.AddRange(types);
+			}
+			System.Console.WriteLine(allClasses.Count);
 
 			FindStubs(allClasses);
 			var testClasses = RefUtil.FindClassesByBaseType(allClasses, typeof(TestFixture<>));

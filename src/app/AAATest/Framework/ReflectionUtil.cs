@@ -34,7 +34,7 @@ namespace AAATest.Framework
 
 
 		public IEnumerable<Type> FindClassesByBaseType(IEnumerable<Type> allTypes, Type baseType) {
-			var types = allTypes.Where(x => x.BaseType.IsGenericType && x.BaseType.GetGenericTypeDefinition() == baseType);
+			var types = allTypes.Where(x => x.BaseType != null && x.BaseType.IsGenericType && x.BaseType.GetGenericTypeDefinition() == baseType);
 			return types;
 		}
 

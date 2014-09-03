@@ -15,7 +15,6 @@ namespace AAATest.ExampleTests.Stubs
 
 		void IStub<ISession>.Stub(Mock<ISession> stub)
 		{
-			var dm = new DataManager();
 			DefaultUser = new User { Id = 7, Name = "frank" };
 
 			//stub.Setup(x => x.Query<User>())
@@ -23,14 +22,6 @@ namespace AAATest.ExampleTests.Stubs
 
 			stub.Setup(x => x.GetById<User>(It.IsAny<Guid>()))
 				.Returns(DefaultUser);
-		}
-	}
-
-	public class DataManager
-	{
-		public T Get<T>()
-		{
-			return default(T);
 		}
 	}
 

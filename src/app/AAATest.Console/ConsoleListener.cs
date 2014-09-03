@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AAATest.Framework;
-using AAATest.Framework;
 
 namespace AAATest.Console {
 	class ConsoleListener : ITestResultListener {
