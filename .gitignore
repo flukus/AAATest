@@ -25,3 +25,4 @@ src/app/AAATest.Console/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20
 src/app/AAATest.Console/obj/
 *.user
 *.settings
+build/
