@@ -12,50 +12,30 @@
 
 	<echo message="MSBuild ${MSBuild}" />
 
-	<assemblyfileset id="lib.package">
-			<include name="packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll" />
-			<include name="packages\Moq.4.1.1309.1617\lib\net40\Moq.dll" />
-	</assemblyfileset>
-
-
 	<target name="init" >
 		<mkdir dir="build" />
 	</target>
 
 	<target name="clean" >
 		<delete dir="build" />
+		<exec program="${MSBuild}">
+			<arg value="/Target:clean" />
+		</exec>
 	</target>
 
 
 	<target name="build" >
-		<!--<exec program="${MSBuild}" />-->
-
-		<csc target="exe" output="build\AAATest.exe" debug="true">
-			<sources>
-				<include name="src\app\AAATest\**\*.cs" />
-				<include name="src\app\AAATest.Console\**\*.cs" />
-				<!-- TODO: these can be removed when we load dynamically -->
-				<include name="src\example\AAATest.ExampleProj\**\*.cs" />
-				<include name="src\example\AAATest.ExampleTests\**\*.cs" />
-				<!-- TODO: generate this dynamically -->
-				<exclude name="**\AssemblyInfo.cs" />
-			</sources>
-			<references refid="lib.package">
-				<include name="System.dll" />
-				<include name="System.Data.dll" />
-				<include refid="lib" />
-			</references>
-		</csc>
+		<exec program="${MSBuild}" />
 	</target>
 
 	<target name="test" depends="build" >
-		<copy todir="build" flatten="true">
-			<fileset refid="lib.package" />
-		</copy>
-		<exec program="build\AAATest.exe" />
+		<echo message="test" />
+		<exec program="src\app\AAATest.Console\bin\debug\AAATest.Console.exe" >
+			<arg value="src\example\AAATest.ExampleTests\bin\debug\AAATest.ExampleTests.dll" />
+		</exec>
 	</target>
 
-	<target name="deploy" depends="build,test" >
+	<target name="deploy" depends="build" >
 		<echo message="deploy" />
 	</target>
 

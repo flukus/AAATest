@@ -59,10 +59,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\example\AAATest.ExampleTests\AAATest.ExampleTests.csproj">
-      <Project>{809a5ea4-59cf-4236-a5e1-e174e7fba1f4}</Project>
-      <Name>AAATest.ExampleTests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AAATest\AAATest.csproj">
       <Project>{634f2705-a990-4d81-96c8-97281eb9138b}</Project>
       <Name>AAATest</Name>

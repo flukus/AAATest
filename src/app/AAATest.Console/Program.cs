@@ -11,7 +11,7 @@ namespace AAATest.Console
 		{
 			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection(), new ConsoleListener());
 			System.Console.WriteLine(Environment.CurrentDirectory);
-			var path = Path.GetFullPath("build\\example\\ExampleTests.dll");
+			var path = Path.GetFullPath(args[0]);
 			System.Console.WriteLine(path );
 			var ass = Assembly.LoadFile(path);
 			suite.Init(null, ass);
