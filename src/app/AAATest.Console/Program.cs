@@ -7,7 +7,7 @@ using AAATest.Framework;
 namespace AAATest.Console
 {
 	class Program {
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection(), new ConsoleListener());
 			System.Console.WriteLine(Environment.CurrentDirectory);
@@ -27,7 +27,11 @@ namespace AAATest.Console
 					actualAss = Assembly.LoadFile(file.FullName);
 			}
 			suite.Init(null, ass);
-			suite.Execute();
+			bool result = suite.Execute();
+
+			if (result)
+				return 0;
+			else return -1;
 
 		}
 

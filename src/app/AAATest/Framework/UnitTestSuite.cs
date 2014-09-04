@@ -57,15 +57,18 @@ namespace AAATest.Framework
 			}
 		}
 
-		public void Execute()
+		public bool Execute()
 		{
+			bool suiteResult = true; //passed
 			foreach (var test in UnitTests) {
 				Listener.TestStarted(string.Format("{0}.{1}", test.TestClass.Name, test.TestMethod.Name));
 				var result = test.Execute();
 				Listener.TestComplete(result);
+				suiteResult &= result.Result == TestResult.Passed;
 			}
 
 			Listener.AllTestsComplete();
+			return suiteResult;
 		}
 
 		public void FindStubs(IEnumerable<Type> allTypes)
