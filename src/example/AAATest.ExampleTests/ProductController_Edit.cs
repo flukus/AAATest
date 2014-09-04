@@ -56,5 +56,19 @@ namespace AAATest.ExampleTests {
 				.Equal(x => x.ProductId, 76);
 		}
 
+		public void AvoidsLazyLoadingProductManager() {
+			//TODO: need syntax to handle new mock
+			Arrange((IRepository x) => x.Query<Product>())
+				.Returns(GetMocked<IQuery<Product>>());
+			Arrange((IQuery<Product> x) => x.Include<User>(It.IsAny<Func<Product, User>>()))
+				.Returns(GetMocked<IQuery<Product>>()).Verifiable();
+			Arrange((IQuery<Product> x) => x.Where(It.IsAny<Func<Product, bool>>()))
+				.Returns(GetMocked<IQuery<Product>>());
+			Arrange((IQuery<Product> x) => x.First())
+				.Returns(new Product { ManagedBy = new User { } });
+			Act(x => x.Edit(31));
+			Assert();
+		}
+
 	}
 }
