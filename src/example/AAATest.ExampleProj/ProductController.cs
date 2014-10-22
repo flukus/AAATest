@@ -37,6 +37,8 @@ namespace AAATest.ExampleProj {
 			if (id <= 0)
 				throw new ArgumentException(string.Format("id must be provided. Provided value was: '{0}'", id));
 			var product = Repository.GetById<Product>(id);
+			if (product == null)
+				throw new Exception(string.Format("Unable to find product with id: '{0}'", id));
 
 			var user = Session.GetCurrentUser();
 			if (user.UserId != product.ManagedBy.Id)

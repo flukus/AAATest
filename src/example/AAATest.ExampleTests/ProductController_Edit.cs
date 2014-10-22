@@ -28,6 +28,13 @@ namespace AAATest.ExampleTests {
 			Act(x => x.Edit(27));
 		}
 
+		public void ExceptionWhenUnknownId() {
+			Arrange((IRepository x) => x.GetById<Product>(99))
+				.Returns<Product>(null);
+			Act(x => x.Edit(99));
+			AssertException("Unable to find product with id: '99'");
+		}
+
 		public void CurrentUserFromSession() {
 			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
 				.Returns(new Product { ManagedBy = new User { } });

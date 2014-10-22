@@ -117,6 +117,8 @@ namespace AAATest.Framework {
 			var exception = Result as Exception;
 			if (exception == null)
 				throw new AssertException("Expected exception but none was thrown");
+			if (exception.Message != message)
+				throw new AssertException(string.Format("Expected exception of with message '{0}' but message was '{1}'", message, exception.Message));
 		}
 
 		public override void AssertException<TException>() {
