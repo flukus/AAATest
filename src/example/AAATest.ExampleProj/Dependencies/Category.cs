@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AAATest.ExampleProj.Dependencies {
-	public class Product {
+	public class Category {
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public Category Category { get; set; }
 	}
 }

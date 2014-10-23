@@ -36,18 +36,20 @@ namespace AAATest.ExampleProj {
 		public ActionResult Edit(int id) {
 			if (id <= 0)
 				throw new ArgumentException(string.Format("id must be provided. Provided value was: '{0}'", id));
-			var product = Repository.GetById<Product>(id);
+			//var product = Repository.GetById<Product>(id);
+			var product = Repository.Query<Product>()
+				.Where(x => x.Id == id)
+				.Include(x => x.Category)
+				.First();
 			if (product == null)
 				throw new Exception(string.Format("Unable to find product with id: '{0}'", id));
-
-			var user = Session.GetCurrentUser();
-			if (user.UserId != product.ManagedBy.Id)
-				throw new Exception("You do not have permission to edit that product");
 
 			return new ViewResult() {
 				DataItem = new ProductEditVM {
 					ProductId = product.Id,
-					ProductName = product.Name
+					ProductName = product.Name,
+					CategoryId = product.Category != null ? product.Category.Id as int? : null,
+					CategoryName = product.Category != null ? product.Category.Name : null
 				}
 			};
 		}

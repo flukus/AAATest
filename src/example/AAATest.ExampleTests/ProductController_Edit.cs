@@ -35,27 +35,9 @@ namespace AAATest.ExampleTests {
 			AssertException("Unable to find product with id: '99'");
 		}
 
-		public void CurrentUserFromSession() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
-				.Returns(new Product { ManagedBy = new User { } });
-			Arrange((ISession x) => x.GetCurrentUser())
-				.Returns(new UserProfile())
-				.Verifiable();
-			Act(x => x.Edit(98));
-			Assert();
-		}
-
-		public void ExceptionWhenCurrentUserNotProductOwner() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
-				.Returns(new Product() { ManagedBy = new User { Id = 27 } });
-			Arrange((ISession x) => x.GetCurrentUser()).Returns(new UserProfile() { UserId = 23 });
-			Act(x => x.Edit(99));
-			AssertException("You do not have permission to edit that product");
-		}
-
 		public void ResultFromReturnedObject() {
 			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
-				.Returns(new Product { Id = 76, Name = "Super Awesome Gizmo", ManagedBy = new User() });
+				.Returns(new Product { Id = 76, Name = "Super Awesome Gizmo" });
 			Arrange((ISession x) => x.GetCurrentUser()).Returns(new UserProfile());
 			Act(x => x.Edit(76));
 			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
@@ -63,16 +45,35 @@ namespace AAATest.ExampleTests {
 				.Equal(x => x.ProductId, 76);
 		}
 
-		public void AvoidsLazyLoadingProductManager() {
+		public void CategoryInfoIsSet() {
+			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+				.Returns(new Product { Category = new Category { Id = 3, Name = "foo" } });
+			Act(x => x.Edit(34));
+			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
+				.Equal(x => x.CategoryId, 3)
+				.Equal(x => x.CategoryName, "foo");
+		}
+
+		public void CategoryNullIfUnknown() {
+			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+				.Returns(new Product { Category = null });
+			Act(x => x.Edit(34));
+			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
+				.Null(x => x.CategoryId)
+				.Null(x => x.CategoryName);
+		}
+
+
+		public void AvoidsLazyLoadingCategory() {
 			//TODO: need syntax to handle new mock
 			Arrange((IRepository x) => x.Query<Product>())
 				.Returns(GetMocked<IQuery<Product>>());
-			Arrange((IQuery<Product> x) => x.Include<User>(It.IsAny<Func<Product, User>>()))
+			Arrange((IQuery<Product> x) => x.Include<Category>(It.IsAny<Func<Product, Category>>()))
 				.Returns(GetMocked<IQuery<Product>>()).Verifiable();
 			Arrange((IQuery<Product> x) => x.Where(It.IsAny<Func<Product, bool>>()))
 				.Returns(GetMocked<IQuery<Product>>());
 			Arrange((IQuery<Product> x) => x.First())
-				.Returns(new Product { ManagedBy = new User { } });
+				.Returns(new Product { Category = new Category { } });
 			Act(x => x.Edit(31));
 			Assert();
 		}
