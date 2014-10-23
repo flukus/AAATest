@@ -27,5 +27,13 @@ namespace AAATest
 			return this;
 		}
 
+		public Assert<T> Null<TCompare>(Func<T, TCompare> actual) {
+			object actualObj = actual(Result);
+			if (actualObj != null)
+				throw new AssertException(string.Format("Expected null but object has value '{0}'", actual.ToString()));
+
+			return this;
+		}
+
 	}
 }
