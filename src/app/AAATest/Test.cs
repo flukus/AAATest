@@ -12,7 +12,7 @@ namespace AAATest {
 	public abstract class TestFixture<T>
 		where T : class {
 
-		public virtual Mock<Y> Arrange<Y>() where Y : class {
+		public virtual Moq.Mock<Y> Arrange<Y>() where Y : class {
 			throw new NotImplementedException();
 		}
 

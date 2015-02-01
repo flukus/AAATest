@@ -9,18 +9,18 @@ namespace AAATest.Framework
 {
 	public class DependencyManager
 	{
-		private Dictionary<Type, Mock> Mocks = new Dictionary<Type, Mock>();
+		private Dictionary<Type, Moq.Mock> Mocks = new Dictionary<Type, Mock>();
 
 		public DependencyManager()
 		{
 		}
 
-		public Mock<T> GetMock<T>() where T : class {
+		public Moq.Mock<T> GetMock<T>() where T : class {
 			var type = typeof(T);
 			if (Mocks.ContainsKey(type))
-				return Mocks[type] as Mock<T>;
+				return Mocks[type] as Moq.Mock<T>;
 			else {
-				var mock = new Mock<T>();
+				var mock = new Moq.Mock<T>();
 				Mocks[type] = mock;
 				return mock;
 			}

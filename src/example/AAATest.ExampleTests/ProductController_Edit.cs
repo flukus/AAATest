@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 using AAATest;
 using AAATest.ExampleProj;
 using AAATest.ExampleProj.Dependencies;
+using AAATest.ExampleTests.Stubs;
 using Moq;
 
 namespace AAATest.ExampleTests {
+
 	public class ProductController_Edit : TestFixture<ProductController> {
+
+		Stubs.ProductRepository Products;
 
 		public void ExceptionWhenId0() {
 			Act(x => x.Edit(0));
@@ -23,7 +27,7 @@ namespace AAATest.ExampleTests {
 
 		public void ProductLoadedFromRepository() {
 			Arrange((IRepository x) => x.GetById<Product>(27))
-				.Returns(new Product())
+				.Returns(Products.Product)
 				.Verifiable();
 			Act(x => x.Edit(27));
 		}
@@ -65,17 +69,20 @@ namespace AAATest.ExampleTests {
 
 
 		public void AvoidsLazyLoadingCategory() {
-			//TODO: need syntax to handle new mock
 			Arrange((IRepository x) => x.Query<Product>())
 				.Returns(GetMocked<IQuery<Product>>());
 			Arrange((IQuery<Product> x) => x.Include<Category>(It.IsAny<Func<Product, Category>>()))
 				.Returns(GetMocked<IQuery<Product>>()).Verifiable();
+			Products.IncludeCategory.Verifiable();
 			Arrange((IQuery<Product> x) => x.Where(It.IsAny<Func<Product, bool>>()))
 				.Returns(GetMocked<IQuery<Product>>());
 			Arrange((IQuery<Product> x) => x.First())
 				.Returns(new Product { Category = new Category { } });
 			Act(x => x.Edit(31));
-			Assert();
+			//TODO: this assertion style is not yet supported, maybe wrap moq?
+			//experiment with moqs actual behavior
+			//Assert(Products.IncludeCategory);
+
 		}
 
 	}

@@ -5,23 +5,28 @@ using System.Text;
 using AAATest.ExampleProj.Dependencies;
 using Moq;
 using AAATest;
+using AAATest.Framework;
 
 namespace AAATest.ExampleTests.Stubs
 {
-	public class CommonStubs : IStub<ISession>
+	public interface IStubGlobally<T> { }
+	public class CommonStubs : 
+		IStubGlobally<ISession>
 	{
-		public static User DefaultUser = null;
+		//void IStub<ISession>.Stub(Mock<ISession> stub, DependencyManager deps)
+		//{
+			//var iq = deps.GetMock<IQuery<Product>>();
+			//stub.Setup(x => x.GetById<User>(It.IsAny<Guid>()))
+				//.Returns(iq);
 
-		void IStub<ISession>.Stub(Mock<ISession> stub)
-		{
-			DefaultUser = new User { Id = 7, Name = "frank" };
+		//}
 
-			//stub.Setup(x => x.Query<User>())
-			//.Returns(dm.Get<EmptyUserList>().AsQueryable());
-
-			stub.Setup(x => x.GetById<User>(It.IsAny<Guid>()))
-				.Returns(DefaultUser);
-		}
+		//void IStub<ISession>.Stub(Mock<IRepository> stub, DependencyManager deps) {
+			//var iq = deps.GetMock<IQuery<Product>>();
+			//iq.Setup(x => x.Include<Category>()).Returns(iq);
+			//stub.Setup(x => x.Query<Product>())
+				//.Returns(GetMocked<IQuery<Product>>());
+		//}
 	}
 
 }

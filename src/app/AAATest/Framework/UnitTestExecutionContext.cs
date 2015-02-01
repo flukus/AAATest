@@ -41,7 +41,7 @@ namespace AAATest.Framework {
 				invocation.Proceed();
 		}
 
-		public override Mock<Y> Arrange<Y>() {
+		public override Moq.Mock<Y> Arrange<Y>() {
 			return DependencyManager.GetMock<Y>(); 
 		}
 
