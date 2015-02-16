@@ -5,9 +5,10 @@ namespace AAATest
 {
     interface IArrange
     {
-        IReturns<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr);
-        IMethodStub Arrange<TMocked>(Expression<Action<TMocked>> expr);
+        IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr);
+        IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr);
         //Moq.Mock<Y> Arrange<Y>() where Y : class;
-        IReturns<Y> Arrange<Y>(IReturns<Y> method, Action<Y> action) where Y : class;
+        IBehavior<Y> Arrange<Y>(IBehavior<Y> method, Action<Y> action) where Y : class;
+        IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue);
     }
 }

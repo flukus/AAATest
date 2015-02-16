@@ -11,7 +11,7 @@ namespace AAATest.Mock
     public class MockInterceptor : IInterceptor
     {
 
-        private Dictionary<MethodInfo, List<MockedMethod>> Recordings = new Dictionary<MethodInfo,List<MockedMethod>>();
+        private Dictionary<MethodInfo, List<Behavior>> Recordings = new Dictionary<MethodInfo,List<Behavior>>();
 
         public void Intercept(IInvocation invocation)
         {
@@ -48,12 +48,12 @@ namespace AAATest.Mock
         }
 
 
-        public MockedMethod AddRecord(MethodInfo method, List<Matcher> matchers)
+        public Behavior AddRecord(MethodInfo method, List<Matcher> matchers)
         {
             if (!Recordings.ContainsKey(method))
-                Recordings.Add(method, new List<MockedMethod>());
+                Recordings.Add(method, new List<Behavior>());
             var methodRecordings = Recordings[method];
-            var stub = new MockedMethod() { Matchers = matchers };
+            var stub = new Behavior() { Matchers = matchers };
             methodRecordings.Insert(0, stub);
             return stub;
         }

@@ -69,13 +69,12 @@
     <Compile Include="Framework\TestState.cs" />
     <Compile Include="Framework\UnitTest.cs" />
     <Compile Include="IArrange.cs" />
-    <Compile Include="IStub.cs" />
+    <Compile Include="BehaviorFactory.cs" />
     <Compile Include="Framework\DependencyManager.cs" />
     <Compile Include="Mock\IMethodStub.cs" />
-    <Compile Include="Mock\IReturns.cs" />
     <Compile Include="Mock\Matcher.cs" />
     <Compile Include="Mock\MockedFunction.cs" />
-    <Compile Include="Mock\MockedMethod.cs" />
+    <Compile Include="Mock\Behavior.cs" />
     <Compile Include="Mock\MockInterceptor.cs" />
     <Compile Include="Mock\MockProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

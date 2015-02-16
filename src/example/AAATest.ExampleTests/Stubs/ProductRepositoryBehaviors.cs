@@ -11,15 +11,15 @@ using AAATest.Mock;
 
 namespace AAATest.ExampleTests.Stubs {
 
-	class ProductRepository : StubProvider {
+	class ProductRepository : BehaviorFactory {
 
         public readonly Product Default;
         //public readonly Product Product;
         public readonly List<Product> Products;
 
-        public IMethodStub IncludeCategory;
-        public IReturns<Product> GetById;
-        public IReturns<Product> FirstOrDefault;
+        public IBehavior IncludeCategory;
+        public IBehavior<Product> GetById;
+        public IBehavior<Product> FirstOrDefault;
 
 		public ProductRepository() {
             Default = new Product { Id = 23, Name = "hello", Category = new Category { Id = 4, Name = "Some Category" } };

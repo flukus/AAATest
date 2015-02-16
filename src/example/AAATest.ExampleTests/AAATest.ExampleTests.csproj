@@ -49,8 +49,8 @@
     <Compile Include="ProductController_Edit.cs" />
     <Compile Include="ProductController_View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Stubs\CommonStubs.cs" />
-    <Compile Include="Stubs\ProductRepositoryStubs.cs" />
+    <Compile Include="Stubs\CommonBehaviors.cs" />
+    <Compile Include="Stubs\ProductRepositoryBehaviors.cs" />
     <Compile Include="UserControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>

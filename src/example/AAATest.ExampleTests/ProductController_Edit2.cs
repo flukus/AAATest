@@ -11,7 +11,7 @@ namespace AAATest.ExampleTests {
     }
 
 	class ProductController_Edit2 : TestFixture<ProductController>,
-        IUseGlobalStub<Stubs.CommonStubs> ,
+        IUseGlobalStub<Stubs.CommonBehaviors> ,
         IUseGlobalStub<Stubs.ProductRepository> {
 
 		public void ExceptionWhenId0() {

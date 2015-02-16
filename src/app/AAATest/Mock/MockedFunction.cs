@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace AAATest.Mock
 {
-    public class MockedFunction<T> : IReturns<T>
+    public class MockedFunction<T> : IBehavior<T>
     {
-        public IReturns<T> Returns(T returnValue)
+        public IBehavior<T> Returns(T returnValue)
         {
             throw new NotImplementedException();
         }
 
-        public IMethodStub ReturnsSelf()
+        public IBehavior ReturnsSelf()
         {
             throw new NotImplementedException();
         }

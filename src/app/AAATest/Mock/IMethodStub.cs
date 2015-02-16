@@ -5,7 +5,13 @@ using System.Text;
 
 namespace AAATest.Mock
 {
-    public interface IMethodStub
+    public interface IBehavior
     {
+    }
+
+    public interface IBehavior<TReturn> : IBehavior
+    {
+        IBehavior<TReturn> Returns(TReturn returnValue);
+        IBehavior ReturnsSelf();
     }
 }

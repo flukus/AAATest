@@ -12,19 +12,28 @@ namespace AAATest {
 	public abstract class TestFixture<T> : IArrange
 		where T : class {
 
-        public IReturns<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
+        public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
         {
             throw new NotImplementedException();
         }
 
-        public IMethodStub Arrange<TMocked>(Expression<Action<TMocked>> expr)
+        public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr)
         {
             throw new NotImplementedException();
         }
 
-        public IReturns<Y> Arrange<Y>(IReturns<Y> method, Action<Y> action) where Y : class
+        public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Action<Y> action) where Y : class
         {
-            throw new NotImplementedException();
+            var realBahvior = behavior as Behavior;
+            action((Y)realBahvior.ReturnValue);
+            return behavior;
+        }
+
+        public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue)
+        {
+            var realBahvior = behavior as Behavior;
+            realBahvior.ReturnValue = returnValue;
+            return behavior;
         }
 
 		public virtual void Act(Action<T> action) {
@@ -61,8 +70,8 @@ namespace AAATest {
 			throw new NotImplementedException();
 		}
 
-        public void Assert(IMethodStub method){}
-        public void Assert(IMethodStub method, int count){}
+        public void Assert(IBehavior method){}
+        public void Assert(IBehavior method, int count){}
 
 		public virtual Y GetMocked<Y>() where Y : class { throw new NotImplementedException(); }
 

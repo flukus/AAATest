@@ -17,24 +17,26 @@ namespace AAATest
         void Init(DependencyManager dep);
     }
 
-	public abstract class StubProvider : IStubProviderInit, IArrange {
+	public abstract class BehaviorFactory : IStubProviderInit, IArrange {
 
         private DependencyManager Dependencies;
 
-        public IReturns<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
+        public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
         {
             throw new NotImplementedException();
         }
 
-        public IMethodStub Arrange<TMocked>(Expression<Action<TMocked>> expr)
+        public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr)
         {
             throw new NotImplementedException();
         }
 
-        public IReturns<Y> Arrange<Y>(IReturns<Y> method, Action<Y> action) where Y : class
+        public IBehavior<Y> Arrange<Y>(IBehavior<Y> method, Action<Y> action) where Y : class
         {
             throw new NotImplementedException();
         }
+
+        public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) { throw new NotImplementedException(); }
 
         void IStubProviderInit.Init(DependencyManager dep)
         {

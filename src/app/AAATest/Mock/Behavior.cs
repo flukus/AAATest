@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AAATest.Mock
 {
-    public class MockedMethod : IMethodStub
+    public class Behavior : IBehavior
     {
         public int CallCount { get; set; }
         public object ReturnValue { get; set; }

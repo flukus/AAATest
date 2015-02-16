@@ -10,11 +10,11 @@ using AAATest.Framework;
 namespace AAATest.ExampleTests.Stubs
 {
 	public interface IStubGlobally<T> { }
-	public class CommonStubs
+	public class CommonBehaviors
 	{
         public readonly UserProfile User;
 
-        public CommonStubs() {
+        public CommonBehaviors() {
             User = new UserProfile();
         }
 		
