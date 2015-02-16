@@ -1,5 +1,4 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,50 +8,33 @@ namespace AAATest.Framework
 {
 	public class DependencyManager
 	{
-		private Dictionary<Type, Moq.Mock> Mocks = new Dictionary<Type, Mock>();
+		private Dictionary<Type, MockedProxy> Mocks = new Dictionary<Type, MockedProxy>();
 
 		public DependencyManager()
 		{
 		}
 
-		public Moq.Mock<T> GetMock<T>() where T : class {
-			var type = typeof(T);
-			if (Mocks.ContainsKey(type))
-				return Mocks[type] as Moq.Mock<T>;
-			else {
-				var mock = new Moq.Mock<T>();
-				Mocks[type] = mock;
-				return mock;
-			}
+		public MockedProxy GetMock<T>() where T : class {
+            throw new NotImplementedException();
 		}
 
-		public Mock GetMock(Type t)
+		public MockedProxy GetMock(Type t)
 		{
-			return (Mock)Mocks[t];
+            throw new NotImplementedException();
 		}
 
-		public Mock GetOrCreateMock(Type t)
+		public MockedProxy GetOrCreateMock(Type t)
 		{
-			if (Mocks.ContainsKey(t))
-				return Mocks[t];
-			var mockType = typeof(Mock<>).MakeGenericType(t);
-			var mock = mockType.GetConstructor(new Type[0]).Invoke(null) as Mock;
-			Mocks[t] = mock;
-			return mock as Mock;
+            throw new NotImplementedException();
 		}
 
-		public IEnumerable<Mock> AllMocks()
+		public IEnumerable<MockedProxy> AllMocks()
 		{
-			return Mocks.Values;
+            throw new NotImplementedException();
 		}
 
-		public IEnumerable<Mock> CreateDependencies(IEnumerable<Type> types) {
-			var list = new List<Mock>();
-			foreach (var type in types) {
-				var mock = GetOrCreateMock(type);
-				list.Add(mock);
-			}
-			return list;
+		public IEnumerable<MockedProxy> CreateDependencies(IEnumerable<Type> types) {
+            throw new NotImplementedException();
 		}
 	}
 }

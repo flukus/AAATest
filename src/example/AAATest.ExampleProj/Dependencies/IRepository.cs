@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace AAATest.ExampleProj.Dependencies {
 	}
 
 	public interface IQuery<T> {
-		IQuery<T> Include<Y>(Func<T, Y> func);
+		IQuery<T> Include<Y>(Expression<Func<T, Y>> func);
 		IQuery<T> Where(Func<T, bool> func);
 		T First();
 	}

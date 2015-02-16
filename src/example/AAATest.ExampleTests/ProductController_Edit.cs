@@ -7,15 +7,15 @@ using AAATest;
 using AAATest.ExampleProj;
 using AAATest.ExampleProj.Dependencies;
 using AAATest.ExampleTests.Stubs;
-using Moq;
+using System.Linq.Expressions;
 
 namespace AAATest.ExampleTests {
 
-	public class ProductController_Edit : TestFixture<ProductController> {
+	class ProductController_Edit : TestFixture<ProductController> {
 
 		Stubs.ProductRepository Products;
 
-		public void ExceptionWhenId0() {
+		public void ExceptionWhenId0(Stubs.ProductRepository products) {
 			Act(x => x.Edit(0));
 			AssertException<ArgumentException>("id must be provided. Provided value was: '0'");
 		}
@@ -26,21 +26,21 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void ProductLoadedFromRepository() {
-			Arrange((IRepository x) => x.GetById<Product>(27))
-				.Returns(Products.Product)
-				.Verifiable();
+            var byId = Arrange((IRepository x) => x.GetById<Product>(27))
+                .Returns(Products.Default);
 			Act(x => x.Edit(27));
+            Assert(byId);
 		}
 
 		public void ExceptionWhenUnknownId() {
 			Arrange((IRepository x) => x.GetById<Product>(99))
-				.Returns<Product>(null);
+				.Returns(null);
 			Act(x => x.Edit(99));
 			AssertException("Unable to find product with id: '99'");
 		}
 
 		public void ResultFromReturnedObject() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+			Arrange((IRepository x) => x.GetById<Product>(Any<int>()))
 				.Returns(new Product { Id = 76, Name = "Super Awesome Gizmo" });
 			Arrange((ISession x) => x.GetCurrentUser()).Returns(new UserProfile());
 			Act(x => x.Edit(76));
@@ -50,7 +50,7 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void CategoryInfoIsSet() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+			Arrange((IRepository x) => x.GetById<Product>(Any<int>()))
 				.Returns(new Product { Category = new Category { Id = 3, Name = "foo" } });
 			Act(x => x.Edit(34));
 			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
@@ -59,7 +59,7 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void CategoryNullIfUnknown() {
-			Arrange((IRepository x) => x.GetById<Product>(It.IsAny<int>()))
+			Arrange((IRepository x) => x.GetById<Product>(Any<int>()))
 				.Returns(new Product { Category = null });
 			Act(x => x.Edit(34));
 			Assert<ViewResult, ProductEditVM>(x => x.DataItem)
@@ -71,19 +71,18 @@ namespace AAATest.ExampleTests {
 		public void AvoidsLazyLoadingCategory() {
 			Arrange((IRepository x) => x.Query<Product>())
 				.Returns(GetMocked<IQuery<Product>>());
-			Arrange((IQuery<Product> x) => x.Include<Category>(It.IsAny<Func<Product, Category>>()))
-				.Returns(GetMocked<IQuery<Product>>()).Verifiable();
-			Products.IncludeCategory.Verifiable();
-			Arrange((IQuery<Product> x) => x.Where(It.IsAny<Func<Product, bool>>()))
-				.Returns(GetMocked<IQuery<Product>>());
+            var incCat = Arrange((IQuery<Product> x) => x.Include<Category>(Any<Expression<Func<Product, Category>>>()))
+                .ReturnsSelf();
+			Arrange((IQuery<Product> x) => x.Where(Any<Func<Product, bool>>()))
+				.ReturnsSelf();
 			Arrange((IQuery<Product> x) => x.First())
 				.Returns(new Product { Category = new Category { } });
 			Act(x => x.Edit(31));
-			//TODO: this assertion style is not yet supported, maybe wrap moq?
-			//experiment with moqs actual behavior
-			//Assert(Products.IncludeCategory);
+            Assert(incCat);
 
 		}
+
+        
 
 	}
 }

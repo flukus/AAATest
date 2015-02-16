@@ -11,7 +11,7 @@ using Moq;
 using Moq.Language.Flow;
 
 namespace AAATest.Framework {
-	class UnitTestExecutionContext<T> : TestFixture<T>, IInterceptor where T : class {
+	class UnitTestExecutionContext<T> {
 
 		private readonly DependencyManager DependencyManager;
 
@@ -29,7 +29,7 @@ namespace AAATest.Framework {
 			DependencyManager = depManager;
 			CurrentStage = TestState.None;
 		}
-
+/*
 		public void Intercept(IInvocation invocation) {
 			//only intercept methods declared on Test<>
 			var type = invocation.MethodInvocationTarget.DeclaringType;
@@ -136,5 +136,6 @@ namespace AAATest.Framework {
 			if (exception.Message != message)
 				throw new AssertException(string.Format("Expected exception of with message '{0}' but message was '{1}'", message, exception.Message));
 		}
+ * */
 	}
 }

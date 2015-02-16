@@ -22,16 +22,15 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void ProductLoadedFromRepository() {
-			Arrange((IRepository x) => x.GetById<Product>(27))
-				.Returns(new Product())
-				.Verifiable();
+            var getById = Arrange((IRepository x) => x.GetById<Product>(27))
+                .Returns(new Product());
 			Act(x => x.View(27));
-			Assert();
+			Assert(getById);
 		}
 
 		public void ExceptionWhenUnknownId() {
 			Arrange((IRepository x) => x.GetById<Product>(99))
-				.Returns<Product>(null);
+				.Returns(null);
 			Act(x => x.View(99));
 			AssertException("Unable to find product with id: '99'");
 		}
