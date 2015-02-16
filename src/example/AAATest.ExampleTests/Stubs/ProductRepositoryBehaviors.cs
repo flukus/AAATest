@@ -13,24 +13,22 @@ namespace AAATest.ExampleTests.Stubs {
 
 	class ProductRepository : BehaviorFactory {
 
-        public readonly Product Default;
+        public Product Default;
         //public readonly Product Product;
-        public readonly List<Product> Products;
+        public List<Product> Products;
 
         public IBehavior IncludeCategory;
         public IBehavior<Product> GetById;
         public IBehavior<Product> FirstOrDefault;
 
-		public ProductRepository() {
+		public override void Setup() {
             Default = new Product { Id = 23, Name = "hello", Category = new Category { Id = 4, Name = "Some Category" } };
             Products = new List<Product> {
                 Default,
                 new Product { Id = 45, Name = "Product with really long name"},
                 new Product { Id = 6789, Name = "IPad"}
             };
-		}
 
-		public void Setup() {
             IncludeCategory = Arrange((IQuery<Product> x) => x.Include(Any<Expression<Func<Product, Category>>>()))
                 .ReturnsSelf();
             GetById = Arrange((IRepository x) => x.GetById<Product>(Any<int>()))

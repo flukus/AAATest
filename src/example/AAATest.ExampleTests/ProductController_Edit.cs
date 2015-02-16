@@ -13,9 +13,7 @@ namespace AAATest.ExampleTests {
 
 	class ProductController_Edit : TestFixture<ProductController> {
 
-		Stubs.ProductRepository Products;
-
-		public void ExceptionWhenId0(Stubs.ProductRepository products) {
+		public void ExceptionWhenId0() {
 			Act(x => x.Edit(0));
 			AssertException<ArgumentException>("id must be provided. Provided value was: '0'");
 		}
@@ -27,7 +25,7 @@ namespace AAATest.ExampleTests {
 
 		public void ProductLoadedFromRepository() {
             var byId = Arrange((IRepository x) => x.GetById<Product>(27))
-                .Returns(Products.Default);
+                .Returns(new Product { Id = 27, Name = "27" });
 			Act(x => x.Edit(27));
             Assert(byId);
 		}
@@ -66,7 +64,6 @@ namespace AAATest.ExampleTests {
 				.Null(x => x.CategoryId)
 				.Null(x => x.CategoryName);
 		}
-
 
 		public void AvoidsLazyLoadingCategory() {
 			Arrange((IRepository x) => x.Query<Product>())

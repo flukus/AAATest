@@ -12,12 +12,12 @@ using AAATest.Mock;
 namespace AAATest
 {
 
-    public interface IStubProviderInit
+    public interface IBehaviorFactoryInit
     {
         void Init(DependencyManager dep);
     }
 
-	public abstract class BehaviorFactory : IStubProviderInit, IArrange {
+	public abstract class BehaviorFactory : IBehaviorFactoryInit, IArrange {
 
         private DependencyManager Dependencies;
 
@@ -38,12 +38,14 @@ namespace AAATest
 
         public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) { throw new NotImplementedException(); }
 
-        void IStubProviderInit.Init(DependencyManager dep)
+        void IBehaviorFactoryInit.Init(DependencyManager dep)
         {
             Dependencies = dep;
         }
 
         public T Any<T>() { throw new NotImplementedException(); }
+
+        public abstract void Setup();
 
 
     }
