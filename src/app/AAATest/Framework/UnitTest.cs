@@ -8,11 +8,9 @@ using AAATest.Framework.Exceptions;
 using Castle.DynamicProxy;
 using AAATest.Mock;
 
-namespace AAATest.Framework
-{
+namespace AAATest.Framework {
 	//unit of work for a single test
-	public class UnitTest
-	{
+	public class UnitTest {
 		//uut = unit under test
 		//dep = dependency
 
@@ -32,17 +30,17 @@ namespace AAATest.Framework
 			try {
 
 				//create the unit under test
-                var behaviors = new BehaviorCollection();
-                var interceptor = new BehaviorInterceptor(behaviors);
-                var mockery = new Mockery(interceptor);
+				var behaviors = new BehaviorCollection();
+				var interceptor = new BehaviorInterceptor(behaviors);
+				var mockery = new Mockery(interceptor);
 				var uutDepTypes = RefUtil.GetCtorParameters(UnitUnerTestType).ToArray();
 				var uutDeps = mockery.GetMocks(uutDepTypes);
 				var uut = RefUtil.CreateTypeWithArguments(UnitUnerTestType, uutDeps.ToArray());
 
 				//execute the test
 				var testFixture = RefUtil.CreateFromEmptyConstructor(TestFixtureType);
-                var init = testFixture as ITestFixtureInit;
-                init.Init(behaviors, mockery, uut);
+				var init = testFixture as ITestFixtureInit;
+				init.Init(behaviors, mockery, uut);
 				RefUtil.InvokeMethod(testFixture, TestMethod);
 
 				return new TestCompletedInfo { Result = TestResult.Passed };
