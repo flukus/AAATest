@@ -13,7 +13,7 @@ using Moq.Language.Flow;
 namespace AAATest.Framework {
 	class UnitTestExecutionContext<T> {
 
-		private readonly DependencyManager DependencyManager;
+		private readonly Mockery DependencyManager;
 
 		/// <summary>
 		/// The unit under test
@@ -23,7 +23,7 @@ namespace AAATest.Framework {
 		private bool ExpectVoidResult;
 		private object Result { get; set; }
 
-		public UnitTestExecutionContext(object unit, DependencyManager depManager) {
+		public UnitTestExecutionContext(object unit, Mockery depManager) {
 
 			Unit = unit;
 			DependencyManager = depManager;

@@ -2,14 +2,15 @@
 using AAATest;
 using AAATest.ExampleProj;
 using AAATest.ExampleProj.Dependencies;
+using AAATest.ExampleTests.Stubs;
 
 namespace AAATest.ExampleTests {
 
 	class ProductController_Edit2 : TestFixture<ProductController>
     {
 
-        public Stubs.CommonBehaviors Common { get; set; }
-        public Stubs.ProductRepository Products { get; set; }
+        public CommonBehaviors Common { get; set; }
+        public ProductRepository Products { get; set; }
 
 		public void ExceptionWhenId0() {
 			Act(x => x.Edit(0));

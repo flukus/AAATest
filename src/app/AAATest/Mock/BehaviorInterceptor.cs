@@ -8,8 +8,15 @@ using System.Threading.Tasks;
 
 namespace AAATest.Mock
 {
-    public class MockInterceptor : IInterceptor
+    public class BehaviorInterceptor : IInterceptor
     {
+
+        private readonly BehaviorCollection Behaviors;
+
+        public BehaviorInterceptor(BehaviorCollection behaviors)
+        {
+            Behaviors = behaviors;
+        }
 
         private Dictionary<MethodInfo, List<Behavior>> Recordings = new Dictionary<MethodInfo,List<Behavior>>();
 

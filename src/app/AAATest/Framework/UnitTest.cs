@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AAATest.Framework.Exceptions;
 using Castle.DynamicProxy;
+using AAATest.Mock;
 
 namespace AAATest.Framework
 {
@@ -15,22 +16,14 @@ namespace AAATest.Framework
 		//uut = unit under test
 		//dep = dependency
 
-		public Type TestClass { get; set; }
+		public Type TestFixtureType { get; set; }
 		//public object TestObject { get; set; }
-		public Type UnitType { get; set; }
-		public ConstructorInfo TestConstructor { get; set; }
+		public Type UnitUnerTestType { get; set; }
+		public ConstructorInfo TestFixtureCtor { get; set; }
 		public MethodInfo TestMethod { get; set; }
-		public List<Stub> DefaultStubs { get; set; }
-		public List<Stub> Stubs { get; set; }
-		private readonly DependencyManager DependencyManager;
 		private readonly ReflectionUtil RefUtil;
-		private readonly StubCollection StubCollection;
-		private static readonly ProxyGenerator generator = new ProxyGenerator();
 
-		public UnitTest(DependencyManager depManager, ReflectionUtil refUtil, StubCollection stubCollection) {
-
-			DependencyManager = depManager;
-			StubCollection = stubCollection;
+		public UnitTest(ReflectionUtil refUtil) {
 			RefUtil = refUtil;
 		}
 
@@ -39,16 +32,18 @@ namespace AAATest.Framework
 			try {
 
 				//create the unit under test
-				var uutDepTypes = RefUtil.GetCtorParameters(UnitType);
-				var uutDeps = DependencyManager.CreateDependencies(uutDepTypes);
-				ApplyStubs(uutDepTypes);
-				//var uut = RefUtil.CreateTypeWithArguments(UnitType, uutDeps.Select(x => x.Object).ToArray());
+                var behaviors = new BehaviorCollection();
+                var interceptor = new BehaviorInterceptor(behaviors);
+                var mockery = new Mockery(interceptor);
+				var uutDepTypes = RefUtil.GetCtorParameters(UnitUnerTestType).ToArray();
+				var uutDeps = mockery.GetMocks(uutDepTypes);
+				var uut = RefUtil.CreateTypeWithArguments(UnitUnerTestType, uutDeps.ToArray());
 
 				//execute the test
-				var interceptorType = RefUtil.CreateGenericType(typeof(UnitTestExecutionContext<>), UnitType);
-				//var interceptor = RefUtil.CreateTypeWithArguments(interceptorType, uut, DependencyManager);
-				//var proxy = generator.CreateClassProxy(TestClass, interceptor as IInterceptor);
-				//RefUtil.InvokeMethod(proxy, TestMethod);
+				var testFixture = RefUtil.CreateFromEmptyConstructor(TestFixtureType);
+                var init = testFixture as ITestFixtureInit;
+                init.Init(behaviors, mockery, uut);
+				RefUtil.InvokeMethod(testFixture, TestMethod);
 
 				return new TestCompletedInfo { Result = TestResult.Passed };
 			} catch (Exception e) { //TODO: catch more exception types here
@@ -70,19 +65,5 @@ namespace AAATest.Framework
 			}
 		}
 
-		public void ApplyStubs(IEnumerable<Type> types) {
-			foreach (var type in types)
-				ApplyStub(type);
-		}
-
-		public void ApplyStub(Type type) {
-			var stubsForType = StubCollection.AllStubs.Where(x => x.StubType == type);
-			foreach (var stub in stubsForType) {
-				var stubber = RefUtil.CreateFromEmptyConstructor(stub.Class);
-				var mock = DependencyManager.GetMock(type);
-				RefUtil.InvokeMethod(stubber, stub.Method, mock);
-			}
-		}
-		
 	}
 }

@@ -14,12 +14,12 @@ namespace AAATest
 
     public interface IBehaviorFactoryInit
     {
-        void Init(DependencyManager dep);
+        void Init(Mockery dep);
     }
 
 	public abstract class BehaviorFactory : IBehaviorFactoryInit, IArrange {
 
-        private DependencyManager Dependencies;
+        private Mockery Dependencies;
 
         public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
         {
@@ -38,7 +38,7 @@ namespace AAATest
 
         public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) { throw new NotImplementedException(); }
 
-        void IBehaviorFactoryInit.Init(DependencyManager dep)
+        void IBehaviorFactoryInit.Init(Mockery dep)
         {
             Dependencies = dep;
         }

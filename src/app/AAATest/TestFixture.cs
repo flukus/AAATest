@@ -9,12 +9,33 @@ using AAATest.Mock;
 
 namespace AAATest {
 
-	public abstract class TestFixture<T> : IArrange
+    public interface ITestFixtureInit
+    {
+        void Init(BehaviorCollection behaviors, Mockery depManager, object uut);
+    }
+
+	public abstract class TestFixture<T> : ITestFixtureInit, IArrange, IAct<T>
 		where T : class {
+
+        private BehaviorCollection Behaviors { get; set; }
+        private Mockery Dependencies { get; set; }
+        private T UnitUnderTest;
+        private object ReturnValue;
+
+        void ITestFixtureInit.Init(BehaviorCollection behaviors, Mockery depManager, object uut)
+        {
+            Dependencies = depManager;
+            Behaviors = behaviors;
+            UnitUnderTest = (T)uut;
+        }
 
         public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
         {
-            throw new NotImplementedException();
+            var method = (expr as MethodCallExpression).Method;
+            var behavior = new Behavior { };
+            Behaviors.Add(method, behavior);
+            var ret = behavior as IBehavior<TReturn>;
+            return ret;
         }
 
         public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr)
@@ -37,11 +58,11 @@ namespace AAATest {
         }
 
 		public virtual void Act(Action<T> action) {
-			throw new NotImplementedException();
+            action(UnitUnderTest);
 		}
 
 		public virtual void Act<A>(Func<T, A> action) {
-			throw new NotImplementedException();
+            ReturnValue = action(UnitUnderTest);
 		}
 
 		public virtual void Assert() {

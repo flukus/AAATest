@@ -14,13 +14,13 @@ namespace AAATest.Framework
 	{
 		//uut = unit under test
 		private readonly ReflectionUtil RefUtil;
-		private readonly StubCollection Stubs;
+        private readonly List<Type> BehaviorFactories;
 		private readonly ITestResultListener Listener;
 		private readonly List<UnitTest> UnitTests;
 
-		public UnitTestSuite(ReflectionUtil util, StubCollection stubs, ITestResultListener listener) {
+		public UnitTestSuite(ReflectionUtil util, ITestResultListener listener) {
 			RefUtil = util;
-			Stubs = stubs;
+            BehaviorFactories = new List<Type>();
 			Listener = listener;
 			UnitTests = new List<UnitTest>();
 		}
@@ -43,14 +43,14 @@ namespace AAATest.Framework
 			var testClasses = RefUtil.FindClassesByBaseType(allClasses, typeof(TestFixture<>));
 			foreach (var test in testClasses) {
 				var uutType = RefUtil.GetGenericParameterOfBaseType(test, typeof(TestFixture<>));
-				var tests = RefUtil.GetPublicMethods(test);
+                var tests = RefUtil.GetPublicMethods(test).Where(x => !x.IsSpecialName);
 				foreach (var method in tests) {
 					//var testObj = CreateTestObject(test);
-					var unitTest = new UnitTest(new DependencyManager(), RefUtil, Stubs) {
-						TestClass = test,
+					var unitTest = new UnitTest(RefUtil) {
+						TestFixtureType = test,
 						//TestObject = testObj,
 						TestMethod = method,
-						UnitType = uutType
+						UnitUnerTestType = uutType
 					};
 					UnitTests.Add(unitTest);
 				}
@@ -61,7 +61,7 @@ namespace AAATest.Framework
 		{
 			bool suiteResult = true; //passed
 			foreach (var test in UnitTests) {
-				Listener.TestStarted(string.Format("{0}.{1}", test.TestClass.Name, test.TestMethod.Name));
+				Listener.TestStarted(string.Format("{0}.{1}", test.TestFixtureType.Name, test.TestMethod.Name));
 				var result = test.Execute();
 				Listener.TestComplete(result);
 				suiteResult &= result.Result == TestResult.Passed;
@@ -73,10 +73,12 @@ namespace AAATest.Framework
 
 		public void FindStubs(IEnumerable<Type> allTypes)
 		{
-			var stubMethods = RefUtil.FindGenericImplimentationByName(allTypes, "IStub");
-			foreach (var method in stubMethods) {
-				Stubs.Add(method.Item1, method.Item2, method.Item3);
-			}
+            var behaviorFactories = allTypes.Where(x => typeof(BehaviorFactory).IsAssignableFrom(x));
+            BehaviorFactories.AddRange(behaviorFactories);
+			//var stubMethods = RefUtil.FindGenericImplimentationByName(allTypes, "IStub");
+			//foreach (var method in stubMethods) {
+				//Stubs.Add(method.Item1, method.Item2, method.Item3);
+			//}
 		}
 
 		

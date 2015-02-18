@@ -9,7 +9,7 @@ namespace AAATest.Console
 	class Program {
 		static int Main(string[] args)
 		{
-			var suite = new UnitTestSuite(new ReflectionUtil(), new StubCollection(), new ConsoleListener());
+			var suite = new UnitTestSuite(new ReflectionUtil(), new ConsoleListener());
 			System.Console.WriteLine(Environment.CurrentDirectory);
 			var path = Path.GetFullPath(args[0]);
 			System.Console.WriteLine(path);
