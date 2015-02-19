@@ -19,6 +19,8 @@ namespace AAATest.Framework {
 		public Type UnitUnerTestType { get; set; }
 		public ConstructorInfo TestFixtureCtor { get; set; }
 		public MethodInfo TestMethod { get; set; }
+		public PropertyInfo[] BehaviorFactories { get; set; }
+
 		private readonly ReflectionUtil RefUtil;
 
 		public UnitTest(ReflectionUtil refUtil) {
@@ -33,12 +35,21 @@ namespace AAATest.Framework {
 				var behaviors = new BehaviorCollection();
 				var interceptor = new BehaviorInterceptor(behaviors);
 				var mockery = new Mockery(interceptor);
+				var arranger = new Arranger(behaviors);
 				var uutDepTypes = RefUtil.GetCtorParameters(UnitUnerTestType).ToArray();
 				var uutDeps = mockery.GetMocks(uutDepTypes);
 				var uut = RefUtil.CreateTypeWithArguments(UnitUnerTestType, uutDeps.ToArray());
 
-				//execute the test
 				var testFixture = RefUtil.CreateFromEmptyConstructor(TestFixtureType);
+				foreach (var bfProperty in BehaviorFactories) {
+					var bf = RefUtil.CreateFromEmptyConstructor(bfProperty.PropertyType) as BehaviorFactory;
+					var bfinit = bf as IBehaviorFactoryInit;
+					bfinit.Init(arranger);
+					bf.Setup();
+					bfProperty.SetValue(testFixture, bf);
+				}
+
+				//execute the test
 				var init = testFixture as ITestFixtureInit;
 				init.Init(behaviors, mockery, uut);
 				RefUtil.InvokeMethod(testFixture, TestMethod);
@@ -55,13 +66,12 @@ namespace AAATest.Framework {
 
 				if (e.GetType() == typeof(AssertException))
 					return new TestCompletedInfo { Result = TestResult.Failed, ErrorName = "Assert Failure", ErrorMessage = e.Message, StackTrace = outerException.StackTrace };
-				else if (e.GetType().Name == "MockVerificationException")
-					return new TestCompletedInfo { Result = TestResult.Failed, ErrorName = "Assert Failure", ErrorMessage = e.Message, StackTrace = topMostException.InnerException.StackTrace };
 				else
 					//TODO: should include full trace of all errors
 					return new TestCompletedInfo { Result = TestResult.FrameworkError, ErrorName = topMostException.GetType().Name, ErrorMessage = topMostException.Message, StackTrace = topMostException.StackTrace };
 			}
 		}
+
 
 	}
 }

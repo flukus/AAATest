@@ -7,20 +7,18 @@ using System.Threading.Tasks;
 using Castle.DynamicProxy;
 using AAATest.Framework;
 
-namespace AAATest.Framework
-{
+namespace AAATest.Framework {
 	//unit of work for the entire test suite
-	public class UnitTestSuite
-	{
+	public class UnitTestSuite {
 		//uut = unit under test
 		private readonly ReflectionUtil RefUtil;
-        private readonly List<Type> BehaviorFactories;
+		private readonly List<Type> BehaviorFactories;
 		private readonly ITestResultListener Listener;
 		private readonly List<UnitTest> UnitTests;
 
 		public UnitTestSuite(ReflectionUtil util, ITestResultListener listener) {
 			RefUtil = util;
-            BehaviorFactories = new List<Type>();
+			BehaviorFactories = new List<Type>();
 			Listener = listener;
 			UnitTests = new List<UnitTest>();
 		}
@@ -43,22 +41,29 @@ namespace AAATest.Framework
 			var testClasses = RefUtil.FindClassesByBaseType(allClasses, typeof(TestFixture<>));
 			foreach (var test in testClasses) {
 				var uutType = RefUtil.GetGenericParameterOfBaseType(test, typeof(TestFixture<>));
-                var tests = RefUtil.GetPublicMethods(test).Where(x => !x.IsSpecialName);
+
+				//get the behavior factories needed for each test fixture
+				var bf = test.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.Where(x => (x.CanWrite && typeof(BehaviorFactory).IsAssignableFrom(x.PropertyType))).ToArray();
+
+				//find the actual tests
+				var tests = RefUtil.GetPublicMethods(test).Where(x => !x.IsSpecialName);
 				foreach (var method in tests) {
 					//var testObj = CreateTestObject(test);
 					var unitTest = new UnitTest(RefUtil) {
 						TestFixtureType = test,
 						//TestObject = testObj,
 						TestMethod = method,
-						UnitUnerTestType = uutType
+						UnitUnerTestType = uutType,
+						BehaviorFactories = bf
 					};
 					UnitTests.Add(unitTest);
 				}
+
 			}
 		}
 
-		public bool Execute()
-		{
+		public bool Execute() {
 			bool suiteResult = true; //passed
 			foreach (var test in UnitTests) {
 				Listener.TestStarted(string.Format("{0}.{1}", test.TestFixtureType.Name, test.TestMethod.Name));
@@ -71,17 +76,16 @@ namespace AAATest.Framework
 			return suiteResult;
 		}
 
-		public void FindStubs(IEnumerable<Type> allTypes)
-		{
-            var behaviorFactories = allTypes.Where(x => typeof(BehaviorFactory).IsAssignableFrom(x));
-            BehaviorFactories.AddRange(behaviorFactories);
+		public void FindStubs(IEnumerable<Type> allTypes) {
+			var behaviorFactories = allTypes.Where(x => typeof(BehaviorFactory).IsAssignableFrom(x));
+			BehaviorFactories.AddRange(behaviorFactories);
 			//var stubMethods = RefUtil.FindGenericImplimentationByName(allTypes, "IStub");
 			//foreach (var method in stubMethods) {
-				//Stubs.Add(method.Item1, method.Item2, method.Item3);
+			//Stubs.Add(method.Item1, method.Item2, method.Item3);
 			//}
 		}
 
-		
+
 
 	}
 }

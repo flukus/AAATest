@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AAATest.Framework;
+using AAATest.Framework.Exceptions;
 using AAATest.Mock;
 
 namespace AAATest {
@@ -18,8 +19,10 @@ namespace AAATest {
 
 		private BehaviorCollection Behaviors { get; set; }
 		private Mockery Dependencies { get; set; }
+		private Arranger Arranger;
 		private T UnitUnderTest;
 		private object ReturnValue;
+		private Exception ActException;
 
 		void ITestFixtureInit.Init(BehaviorCollection behaviors, Mockery depManager, object uut) {
 			Dependencies = depManager;
@@ -28,35 +31,35 @@ namespace AAATest {
 		}
 
 		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) {
-			var method = (expr as MethodCallExpression).Method;
-			var behavior = new Behavior { };
-			Behaviors.Add(method, behavior);
-			var ret = behavior as IBehavior<TReturn>;
-			return ret;
+			return Arranger.Arrange<TMocked, TReturn>(expr);
 		}
 
 		public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr) {
-			throw new NotImplementedException();
+			return Arranger.Arrange<TMocked>(expr);
 		}
 
 		public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Action<Y> action) where Y : class {
-			var realBahvior = behavior as Behavior;
-			action((Y)realBahvior.ReturnValue);
-			return behavior;
+			return Arranger.Arrange(behavior, action);
 		}
 
 		public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) {
-			var realBahvior = behavior as Behavior;
-			realBahvior.ReturnValue = returnValue;
-			return behavior;
+			return Arranger.Arrange(behavior, returnValue);
 		}
 
 		public virtual void Act(Action<T> action) {
-			action(UnitUnderTest);
+			try {
+				action(UnitUnderTest);
+			} catch (Exception e) {
+				ActException = e;
+			}
 		}
 
 		public virtual void Act<A>(Func<T, A> action) {
-			ReturnValue = action(UnitUnderTest);
+			try {
+				ReturnValue = action(UnitUnderTest);
+			} catch (Exception e) {
+				ActException = e;
+			}
 		}
 
 		public virtual void Assert() {
@@ -74,15 +77,24 @@ namespace AAATest {
 		}
 
 		public virtual void AssertException(string message) {
-			throw new NotImplementedException();
+			if (ActException == null)
+				throw new AssertException("Expected exception but none was thrown");
+			if (ActException.Message != message)
+				throw new AssertException(string.Format("Expected exception message of '{0}' but result was '{1'}", message, ActException.Message));
 		}
 
 		public virtual void AssertException<TException>() where TException : Exception {
-			throw new NotImplementedException();
+			if (ActException == null)
+				throw new AssertException("Expected exception but none was thrown");
 		}
 
 		public virtual void AssertException<TException>(string message) where TException : Exception {
-			throw new NotImplementedException();
+			if (ActException == null)
+				throw new AssertException("Expected exception but none was thrown");
+			if (ActException.GetType() != typeof(TException))
+				throw new AssertException(string.Format("Expected exception of type of '{0}' but result was '{1'}", typeof(TException).Name, ActException.GetType().Name));
+			if (ActException.Message != message)
+				throw new AssertException(string.Format("Expected exception message of '{0}' but result was '{1'}", message, ActException.Message));
 		}
 
 		public void Assert(IBehavior method) { }

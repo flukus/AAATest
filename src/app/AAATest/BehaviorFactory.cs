@@ -8,45 +8,42 @@ using AAATest.Framework;
 using Moq.Language.Flow;
 using System.Linq.Expressions;
 using AAATest.Mock;
+using System.Reflection;
 
-namespace AAATest
-{
+namespace AAATest {
 
-    public interface IBehaviorFactoryInit
-    {
-        void Init(Mockery dep);
-    }
+	public interface IBehaviorFactoryInit {
+		void Init(Arranger arranger);
+	}
 
 	public abstract class BehaviorFactory : IBehaviorFactoryInit, IArrange {
 
-        private Mockery Dependencies;
+		//private Mockery Dependencies;
+		private Arranger Arranger;
 
-        public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr)
-        {
-            throw new NotImplementedException();
-        }
+		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) {
+			return Arranger.Arrange<TMocked, TReturn>(expr);
+		}
 
-        public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr)
-        {
-            throw new NotImplementedException();
-        }
+		public IBehavior Arrange<TMocked>(Expression<Action<TMocked>> expr) {
+			return Arranger.Arrange<TMocked>(expr);
+		}
 
-        public IBehavior<Y> Arrange<Y>(IBehavior<Y> method, Action<Y> action) where Y : class
-        {
-            throw new NotImplementedException();
-        }
+		public IBehavior<Y> Arrange<Y>(IBehavior<Y> method, Action<Y> action) where Y : class {
+			return Arranger.Arrange(method, action);
+		}
 
-        public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) { throw new NotImplementedException(); }
+		public IBehavior<Y> Arrange<Y>(IBehavior<Y> behavior, Y returnValue) {
+			return Arranger.Arrange(behavior, returnValue);
+		}
 
-        void IBehaviorFactoryInit.Init(Mockery dep)
-        {
-            Dependencies = dep;
-        }
+		void IBehaviorFactoryInit.Init(Arranger arranger) {
+			Arranger = arranger;
+		}
 
-        public T Any<T>() { throw new NotImplementedException(); }
+		public T Any<T>() { throw new NotImplementedException(); }
 
-        public abstract void Setup();
+		public abstract void Setup();
 
-
-    }
+	}
 }

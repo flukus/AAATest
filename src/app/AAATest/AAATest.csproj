@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Assert.cs" />
     <Compile Include="AssertEqual.cs" />
+    <Compile Include="Framework\Arranger.cs" />
     <Compile Include="Mock\BehaviorCollection.cs" />
     <Compile Include="Framework\Exceptions\AssertException.cs" />
     <Compile Include="Framework\Exceptions\TestException.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="Framework\Mockery.cs" />
     <Compile Include="Mock\IMethodStub.cs" />
     <Compile Include="Mock\Matcher.cs" />
-    <Compile Include="Mock\MockedFunction.cs" />
     <Compile Include="Mock\Behavior.cs" />
     <Compile Include="Mock\BehaviorInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
