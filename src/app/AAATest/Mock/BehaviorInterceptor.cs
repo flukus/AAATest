@@ -5,64 +5,40 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AAAUnit.Framework.Exceptions;
 
-namespace AAATest.Mock
-{
-    public class BehaviorInterceptor : IInterceptor
-    {
+namespace AAATest.Mock {
+	public class BehaviorInterceptor : IInterceptor {
 
-        private readonly BehaviorCollection Behaviors;
+		private readonly BehaviorCollection Behaviors;
 
-        public BehaviorInterceptor(BehaviorCollection behaviors)
-        {
-            Behaviors = behaviors;
-        }
+		public BehaviorInterceptor(BehaviorCollection behaviors) {
+			Behaviors = behaviors;
+		}
 
-        private Dictionary<MethodInfo, List<Behavior>> Recordings = new Dictionary<MethodInfo,List<Behavior>>();
+		public void Intercept(IInvocation invocation) {
+			try {
+				Replay(invocation);
+				//invocation.Proceed();
+			} catch (Exception) {
+				throw;
+			} finally {
+			}
+		}
 
-        public void Intercept(IInvocation invocation)
-        {
-            Console.WriteLine("Before target call");
-            try
-            {
-                Replay(invocation);
-                //invocation.Proceed();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Target threw an exception!");
-                throw;
-            }
-            finally
-            {
-                Console.WriteLine("After target call");
-            }
-        }
+		private void Replay(IInvocation invocation) {
+			var behaviors = Behaviors.GetBehaviorsForMethod(invocation.Method);
+			if (behaviors.Count() == 0)
+				throw new Exception(string.Format("No behaviors found for method {0}", invocation.Method.Name));
+			foreach (var behavior in behaviors) {
+				if (behavior.IsMatch(invocation.Arguments)) {
+					behavior.CallCount++;
+					invocation.ReturnValue = behavior.ReturnValue;
+					return;
+				}
 
-        private void Replay(IInvocation invocation)
-        {
-            var recordings = Recordings[invocation.Method];
-            foreach (var recording in recordings)
-            {
-                if (recording.IsMatch(invocation.Arguments))
-                {
-                    recording.CallCount++;
-                    invocation.ReturnValue = recording.ReturnValue;
-                    return;
-                }
+			}
+		}
 
-            }
-        }
-
-
-        public Behavior AddRecord(MethodInfo method, List<Matcher> matchers)
-        {
-            if (!Recordings.ContainsKey(method))
-                Recordings.Add(method, new List<Behavior>());
-            var methodRecordings = Recordings[method];
-            var stub = new Behavior() { Matchers = matchers };
-            methodRecordings.Insert(0, stub);
-            return stub;
-        }
-    }
+	}
 }

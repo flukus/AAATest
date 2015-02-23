@@ -24,10 +24,10 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void ProductLoadedFromRepository() {
-            var byId = Arrange((IRepository x) => x.GetById<Product>(27))
-                .Returns(new Product { Id = 27, Name = "27" });
+			var byId = Arrange((IRepository x) => x.GetById<Product>(27))
+					.Returns(new Product { Id = 27, Name = "27" });
 			Act(x => x.Edit(27));
-            Assert(byId);
+			Assert(byId);
 		}
 
 		public void ExceptionWhenUnknownId() {
@@ -65,21 +65,23 @@ namespace AAATest.ExampleTests {
 				.Null(x => x.CategoryName);
 		}
 
+		/*
 		public void AvoidsLazyLoadingCategory() {
 			Arrange((IRepository x) => x.Query<Product>())
 				.Returns(GetMocked<IQuery<Product>>());
-            var incCat = Arrange((IQuery<Product> x) => x.Include<Category>(Any<Expression<Func<Product, Category>>>()))
-                .ReturnsSelf();
-			Arrange((IQuery<Product> x) => x.Where(Any<Func<Product, bool>>()))
+			var incCat = Arrange((IQuery<Product> x) => x.Include<Category>(Any<Expression<Func<Product, Category>>>()))
+					.ReturnsSelf();
+			Arrange((IQuery<Product> x) => x.Where(Any<Expression<Func<Product, bool>>>()))
 				.ReturnsSelf();
 			Arrange((IQuery<Product> x) => x.First())
 				.Returns(new Product { Category = new Category { } });
 			Act(x => x.Edit(31));
-            Assert(incCat);
+			Assert(incCat);
 
 		}
+		 */
 
-        
+
 
 	}
 }

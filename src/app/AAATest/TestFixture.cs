@@ -11,7 +11,7 @@ using AAATest.Mock;
 namespace AAATest {
 
 	public interface ITestFixtureInit {
-		void Init(BehaviorCollection behaviors, Mockery depManager, object uut);
+		void Init(BehaviorCollection behaviors, Mockery depManager, object uut, Arranger arranger);
 	}
 
 	public abstract class TestFixture<T> : ITestFixtureInit, IArrange, IAct<T>
@@ -24,13 +24,14 @@ namespace AAATest {
 		private object ReturnValue;
 		private Exception ActException;
 
-		void ITestFixtureInit.Init(BehaviorCollection behaviors, Mockery depManager, object uut) {
+		void ITestFixtureInit.Init(BehaviorCollection behaviors, Mockery depManager, object uut, Arranger arranger) {
 			Dependencies = depManager;
 			Behaviors = behaviors;
 			UnitUnderTest = (T)uut;
+			Arranger = arranger;
 		}
 
-		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) {
+		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) where TMocked : class {
 			return Arranger.Arrange<TMocked, TReturn>(expr);
 		}
 
@@ -69,7 +70,18 @@ namespace AAATest {
 		public virtual Assert<Z> Assert<Y, Z>(Func<Y, object> func)
 			where Y : class
 			where Z : class {
-			throw new NotImplementedException();
+			if (ReturnValue == null)
+				throw new AssertException("Returned Value was null");
+			var value = ReturnValue as Y;
+			if (value == null)
+				throw new AssertException(string.Format("Returned value expected to be type '{0}' but was type '{1}'", typeof(Y), ReturnValue.GetType()));
+			var funcResult = func(value);
+			if (funcResult == null)
+				throw new AssertException("Expecting a value but result was null");
+			var typedFuncResult = funcResult as Z;
+			if (value == null)
+				throw new AssertException(string.Format("Returned value expected to be type '{0}' but was type '{1}'", typeof(Z), funcResult.GetType()));
+			return new Assert<Z>(typedFuncResult);
 		}
 
 		public virtual Assert<Y> Assert<Y>() {
@@ -80,7 +92,7 @@ namespace AAATest {
 			if (ActException == null)
 				throw new AssertException("Expected exception but none was thrown");
 			if (ActException.Message != message)
-				throw new AssertException(string.Format("Expected exception message of '{0}' but result was '{1'}", message, ActException.Message));
+				throw new AssertException(string.Format("Expected exception message of '{0}' but result was '{1}'", message, ActException.Message));
 		}
 
 		public virtual void AssertException<TException>() where TException : Exception {
@@ -97,17 +109,25 @@ namespace AAATest {
 				throw new AssertException(string.Format("Expected exception message of '{0}' but result was '{1'}", message, ActException.Message));
 		}
 
-		public void Assert(IBehavior method) { }
-		public void Assert(IBehavior method, int count) { }
+		public void Assert(IBehavior method) {
+			var behavior = method as Behavior;
+			if (behavior.CallCount == 0)
+				throw new AssertException("Expected behavior to be called but it wasn't");
+		}
+		public void Assert(IBehavior method, int count) {
+			var behavior = method as Behavior;
+			if (behavior.CallCount == count)
+				throw new AssertException(string.Format("Expected behavior to be called {0} times but it was called {1} times", count, behavior.CallCount));
+		}
 
 		public virtual Y GetMocked<Y>() where Y : class { throw new NotImplementedException(); }
 
-		public static T Any<T>() {
-			return default(T);
+		public static TMock Any<TMock>() {
+			return default(TMock);
 		}
 
-		public static T Where<T>(Func<T, bool> func) {
-			return default(T);
+		public static TMock Where<TMock>(Func<T, bool> func) {
+			return default(TMock);
 		}
 
 		public static Expression<Func<T, TReturn>> AnyExpr<T, TReturn>() { return null; }

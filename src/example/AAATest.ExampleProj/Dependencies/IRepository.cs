@@ -13,7 +13,7 @@ namespace AAATest.ExampleProj.Dependencies {
 
 	public interface IQuery<T> {
 		IQuery<T> Include<Y>(Expression<Func<T, Y>> func);
-		IQuery<T> Where(Func<T, bool> func);
+		IQuery<T> Where(Expression<Func<T, bool>> func);
 		T First();
 	}
 }

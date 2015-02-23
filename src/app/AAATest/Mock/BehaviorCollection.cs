@@ -11,19 +11,19 @@ namespace AAATest.Mock
 {
     public class BehaviorCollection
     {
-        private Dictionary<MethodInfo, List<IBehavior>> Behaviors;
+        private Dictionary<MethodInfo, List<Behavior>> Behaviors;
 
         public BehaviorCollection()
         {
-            Behaviors = new Dictionary<MethodInfo, List<IBehavior>>();
+            Behaviors = new Dictionary<MethodInfo, List<Behavior>>();
         }
 
         public void Add(MethodInfo method, Behavior behavior)
         {
-            List<IBehavior> behaviors = null;
+            List<Behavior> behaviors = null;
             if (!Behaviors.ContainsKey(method))
             {
-                behaviors = new List<IBehavior>();
+                behaviors = new List<Behavior>();
                 Behaviors[method] = behaviors;
             }
             else 
@@ -46,5 +46,11 @@ namespace AAATest.Mock
         {
             throw new NotImplementedException();
         }
-    }
+
+				internal List<Behavior> GetBehaviorsForMethod(MethodInfo methodInfo) {
+					if (Behaviors.ContainsKey(methodInfo))
+						return Behaviors[methodInfo];
+					else return new List<Behavior>();
+				}
+		}
 }

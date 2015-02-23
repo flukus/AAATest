@@ -13,15 +13,16 @@ using System.Reflection;
 namespace AAATest {
 
 	public interface IBehaviorFactoryInit {
-		void Init(Arranger arranger);
+		void Init(Arranger arranger, Mockery mockery);
 	}
 
 	public abstract class BehaviorFactory : IBehaviorFactoryInit, IArrange {
 
 		//private Mockery Dependencies;
 		private Arranger Arranger;
+		private Mockery Mockery;
 
-		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) {
+		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) where TMocked : class {
 			return Arranger.Arrange<TMocked, TReturn>(expr);
 		}
 
@@ -37,11 +38,15 @@ namespace AAATest {
 			return Arranger.Arrange(behavior, returnValue);
 		}
 
-		void IBehaviorFactoryInit.Init(Arranger arranger) {
+		void IBehaviorFactoryInit.Init(Arranger arranger, Mockery mockery) {
 			Arranger = arranger;
+			Mockery = mockery;
 		}
 
 		public T Any<T>() { throw new NotImplementedException(); }
+		public T Mock<T>() where T : class {
+			return Mockery.GetMock<T>();
+		}
 
 		public abstract void Setup();
 

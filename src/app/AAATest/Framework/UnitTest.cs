@@ -35,7 +35,7 @@ namespace AAATest.Framework {
 				var behaviors = new BehaviorCollection();
 				var interceptor = new BehaviorInterceptor(behaviors);
 				var mockery = new Mockery(interceptor);
-				var arranger = new Arranger(behaviors);
+				var arranger = new Arranger(behaviors, mockery);
 				var uutDepTypes = RefUtil.GetCtorParameters(UnitUnerTestType).ToArray();
 				var uutDeps = mockery.GetMocks(uutDepTypes);
 				var uut = RefUtil.CreateTypeWithArguments(UnitUnerTestType, uutDeps.ToArray());
@@ -44,14 +44,14 @@ namespace AAATest.Framework {
 				foreach (var bfProperty in BehaviorFactories) {
 					var bf = RefUtil.CreateFromEmptyConstructor(bfProperty.PropertyType) as BehaviorFactory;
 					var bfinit = bf as IBehaviorFactoryInit;
-					bfinit.Init(arranger);
+					bfinit.Init(arranger, mockery);
 					bf.Setup();
 					bfProperty.SetValue(testFixture, bf);
 				}
 
 				//execute the test
 				var init = testFixture as ITestFixtureInit;
-				init.Init(behaviors, mockery, uut);
+				init.Init(behaviors, mockery, uut, arranger);
 				RefUtil.InvokeMethod(testFixture, TestMethod);
 
 				return new TestCompletedInfo { Result = TestResult.Passed };
