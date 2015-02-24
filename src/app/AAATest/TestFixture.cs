@@ -14,20 +14,20 @@ namespace AAATest {
 		void Init(BehaviorCollection behaviors, Mockery depManager, object uut, Arranger arranger);
 	}
 
-	public abstract class TestFixture<T> : ITestFixtureInit, IArrange, IAct<T>
-		where T : class {
+	public abstract class TestFixture<TUnitUnderTest> : ITestFixtureInit, IArrange, IAct<TUnitUnderTest>
+		where TUnitUnderTest : class {
 
 		private BehaviorCollection Behaviors { get; set; }
 		private Mockery Dependencies { get; set; }
 		private Arranger Arranger;
-		private T UnitUnderTest;
+		private TUnitUnderTest UnitUnderTest;
 		private object ReturnValue;
 		private Exception ActException;
 
 		void ITestFixtureInit.Init(BehaviorCollection behaviors, Mockery depManager, object uut, Arranger arranger) {
 			Dependencies = depManager;
 			Behaviors = behaviors;
-			UnitUnderTest = (T)uut;
+			UnitUnderTest = (TUnitUnderTest)uut;
 			Arranger = arranger;
 		}
 
@@ -47,7 +47,7 @@ namespace AAATest {
 			return Arranger.Arrange(behavior, returnValue);
 		}
 
-		public virtual void Act(Action<T> action) {
+		public virtual void Act(Action<TUnitUnderTest> action) {
 			try {
 				action(UnitUnderTest);
 			} catch (Exception e) {
@@ -55,7 +55,7 @@ namespace AAATest {
 			}
 		}
 
-		public virtual void Act<A>(Func<T, A> action) {
+		public virtual void Act<A>(Func<TUnitUnderTest, A> action) {
 			try {
 				ReturnValue = action(UnitUnderTest);
 			} catch (Exception e) {
@@ -126,7 +126,7 @@ namespace AAATest {
 			return default(TMock);
 		}
 
-		public static TMock Where<TMock>(Func<T, bool> func) {
+		public static TMock Where<TMock>(Func<TMock, bool> func) {
 			return default(TMock);
 		}
 

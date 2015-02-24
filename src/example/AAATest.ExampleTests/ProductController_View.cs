@@ -22,8 +22,8 @@ namespace AAATest.ExampleTests {
 		}
 
 		public void ProductLoadedFromRepository() {
-            var getById = Arrange((IRepository x) => x.GetById<Product>(27))
-                .Returns(new Product());
+			var getById = Arrange((IRepository x) => x.GetById<Product>(27))
+					.Returns(new Product());
 			Act(x => x.View(27));
 			Assert(getById);
 		}
