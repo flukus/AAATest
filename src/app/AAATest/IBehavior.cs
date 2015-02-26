@@ -12,6 +12,7 @@ namespace AAATest.Mock
     public interface IBehavior<TReturn> : IBehavior
     {
         IBehavior<TReturn> Returns(TReturn returnValue);
+        IBehavior<TReturn> Returns<TMock>() where TMock : class, TReturn;
         IBehavior ReturnsSelf();
     }
 }

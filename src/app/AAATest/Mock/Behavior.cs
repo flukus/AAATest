@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AAATest.Framework;
 
 namespace AAATest.Mock {
 	public class Behavior : IBehavior {
 		public int CallCount { get; set; }
 		public object ReturnValue { get; set; }
-		protected readonly object Mock;
+		//protected readonly object Mock;
 		public List<Matcher> Matchers { get; set; }
+		protected object Mock;
 
 		public Behavior(object mock) {
 			Mock = mock;
@@ -27,15 +29,23 @@ namespace AAATest.Mock {
 		}
 	}
 
-	public class Behavior<T> : Behavior, IBehavior<T> {
+	public class Behavior<TReturn> : Behavior, IBehavior<TReturn> {
 
-		public Behavior(object mock)
+		private readonly Mockery Mockery;
+
+		public Behavior(object mock, Mockery mockery)
 			: base(mock) {
+			Mockery = mockery;
 		}
 
-		public IBehavior<T> Returns(T returnValue) {
+		public IBehavior<TReturn> Returns(TReturn returnValue) {
 			ReturnValue = returnValue;
 			return this;
+		}
+
+		public IBehavior<TReturn> Returns<TMock>() where TMock : class, TReturn {
+			ReturnValue =  Mockery.GetMock<TMock>();
+			return this ;
 		}
 
 		public IBehavior ReturnsSelf() {

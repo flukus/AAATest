@@ -20,7 +20,7 @@ namespace AAATest.Framework {
 		public Mock.IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) where TMocked : class {
 			var mock = Mockery.GetMock<TMocked>();
 			var method = (expr.Body as MethodCallExpression).Method;
-			var behavior = new Behavior<TReturn>(mock);
+			var behavior = new Behavior<TReturn>(mock, Mockery);
 			//foreach (var param in method.GetParameters()) {
 				//behavior.Matchers.Add(new Matcher());
 			//}

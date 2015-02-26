@@ -71,7 +71,7 @@
     <Compile Include="IArrange.cs" />
     <Compile Include="BehaviorFactory.cs" />
     <Compile Include="Framework\Mockery.cs" />
-    <Compile Include="Mock\IMethodStub.cs" />
+    <Compile Include="IBehavior.cs" />
     <Compile Include="Mock\Matcher.cs" />
     <Compile Include="Mock\Behavior.cs" />
     <Compile Include="Mock\BehaviorInterceptor.cs" />
