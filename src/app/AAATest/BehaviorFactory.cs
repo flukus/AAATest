@@ -44,9 +44,6 @@ namespace AAATest {
 		}
 
 		public T Any<T>() { throw new NotImplementedException(); }
-		public T Mock<T>() where T : class {
-			return Mockery.GetMock<T>();
-		}
 
 		public abstract void Setup();
 

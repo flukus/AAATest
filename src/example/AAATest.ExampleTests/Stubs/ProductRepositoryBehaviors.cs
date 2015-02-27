@@ -18,7 +18,7 @@ namespace AAATest.ExampleTests.Stubs {
 		public List<Product> Products;
 
 		public IBehavior IncludeCategory;
-		public IBehavior<Product> GetById;
+		//public IBehavior<Product> GetById;
 		public IBehavior<Product> FirstOrDefault;
 
 		public override void Setup() {
@@ -36,8 +36,8 @@ namespace AAATest.ExampleTests.Stubs {
 					.ReturnsSelf();
 			IncludeCategory = Arrange((IQuery<Product> x) => x.Where(Any<Expression<Func<Product, bool>>>()))
 					.ReturnsSelf();
-			GetById = Arrange((IRepository x) => x.GetById<Product>(Any<int>()))
-					.Returns(Default);
+			//GetById = Arrange((IRepository x) => x.GetById<Product>(Any<int>()))
+					//.Returns(Default);
 
 			FirstOrDefault = Arrange((IQuery<Product> q) => q.First()).Returns(Default);
 		}

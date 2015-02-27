@@ -120,8 +120,6 @@ namespace AAATest {
 				throw new AssertException(string.Format("Expected behavior to be called {0} times but it was called {1} times", count, behavior.CallCount));
 		}
 
-		public virtual Y GetMocked<Y>() where Y : class { throw new NotImplementedException(); }
-
 		public static TMock Any<TMock>() {
 			return default(TMock);
 		}
