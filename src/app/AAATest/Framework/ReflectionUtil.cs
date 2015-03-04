@@ -4,13 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AAAUnit.Framework.Exceptions;
 
 namespace AAATest.Framework
 {
 	public class ReflectionUtil {
 
 		public ConstructorInfo GetCtor(Type type) {
-			var ctor = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+			var ctor = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)
 				.OrderByDescending(x => x.GetParameters().Count())
 				.FirstOrDefault();
 			return ctor;

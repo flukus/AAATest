@@ -4,46 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AAATest.Mock
-{
+namespace AAATest.Mock {
 
-    public class Matcher
-    {
-        public virtual bool IsMatch(object value)
-        {
-            return true;
-        }
-    }
+	public class Matcher {
+		public virtual bool IsMatch(object value) {
+			return true;
+		}
+	}
 
-    public class ValueMatcher : Matcher
-    {
-        private readonly object ExpectedValue;
+	public class ValueMatcher : Matcher {
+		public object ExpectedValue { get; set; }
 
-        public ValueMatcher(object expected)
-        {
-            ExpectedValue = expected;
-        }
+		public override bool IsMatch(object value) {
+			if (ExpectedValue == null && value == null)
+				return true;
+			if (ExpectedValue == null || value == null)
+				return false;
+			return ExpectedValue.Equals(value);
+		}
+	}
 
-        public override bool IsMatch(object value)
-        {
-            return ExpectedValue.Equals(value);
-        }
-    }
+	public class DelegateMatcher : Matcher {
+		public Delegate Delegate;
 
-    class DelegateMatcher : Matcher
-    {
-        private readonly Delegate Delegate;
-
-        public DelegateMatcher(Delegate d)
-        {
-            Delegate = d;
-        }
-
-        public override bool IsMatch(object value)
-        {
-            object result = Delegate.DynamicInvoke(value);
-            return (bool)result;
-        }
-    }
+		public override bool IsMatch(object value) {
+			object result = Delegate.DynamicInvoke(value);
+			return (bool)result;
+		}
+	}
 
 }

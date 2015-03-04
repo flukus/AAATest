@@ -22,7 +22,7 @@ namespace AAATest.Framework {
 			var method = (expr.Body as MethodCallExpression).Method;
 			var behavior = new Behavior<TReturn>(mock, Mockery);
 			//foreach (var param in method.GetParameters()) {
-				//behavior.Matchers.Add(new Matcher());
+			//behavior.Matchers.Add(new Matcher());
 			//}
 			//Behaviors.Add(method, behavior);
 			//return behavior;
@@ -34,7 +34,7 @@ namespace AAATest.Framework {
 				foreach (var arg in callExpr.Arguments) {
 					if (arg.NodeType == ExpressionType.Constant) {
 						var c = arg as ConstantExpression;
-						matchers.Add(new ValueMatcher(c.Value));
+						matchers.Add(new ValueMatcher { ExpectedValue = c.Value });
 					} else if (arg.NodeType == ExpressionType.Call) {
 						var c = arg as MethodCallExpression;
 						//assume only matcher is any
@@ -43,7 +43,7 @@ namespace AAATest.Framework {
 						else if (c.Arguments[0].NodeType == ExpressionType.Lambda) {
 							var lamda = c.Arguments[0] as LambdaExpression;
 							var d = lamda.Compile();
-							matchers.Add(new DelegateMatcher(d));
+							matchers.Add(new DelegateMatcher() { Delegate = d });
 						}
 					}
 					behavior.Matchers.AddRange(matchers);

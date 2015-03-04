@@ -14,7 +14,7 @@ namespace AAATest {
 		void Init(BehaviorCollection behaviors, Mockery depManager, object uut, Arranger arranger);
 	}
 
-	public abstract class TestFixture<TUnitUnderTest> : ITestFixtureInit, IArrange, IAct<TUnitUnderTest>
+	public class TestFixture<TUnitUnderTest> : ITestFixtureInit, IArrange, IAct<TUnitUnderTest>
 		where TUnitUnderTest : class {
 
 		private BehaviorCollection Behaviors { get; set; }
@@ -29,6 +29,10 @@ namespace AAATest {
 			Behaviors = behaviors;
 			UnitUnderTest = (TUnitUnderTest)uut;
 			Arranger = arranger;
+		}
+
+		public void Arrange(Action<TUnitUnderTest> action) {
+			action(UnitUnderTest);
 		}
 
 		public IBehavior<TReturn> Arrange<TMocked, TReturn>(Expression<Func<TMocked, TReturn>> expr) where TMocked : class {
@@ -63,8 +67,10 @@ namespace AAATest {
 			}
 		}
 
-		public virtual void Assert() {
-			throw new NotImplementedException();
+		public virtual Assert Assert() {
+			if (ActException != null)
+				throw new AssertException("Cannot assert because act threw exception");
+			return new Assert(ReturnValue);
 		}
 
 		public virtual Assert<Z> Assert<Y, Z>(Func<Y, object> func)

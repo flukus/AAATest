@@ -29,6 +29,8 @@ namespace AAATest.Console
 			suite.Init(null, ass);
 			bool result = suite.Execute();
 
+			if (args.Length > 1 && args[1] == "/d")
+				System.Console.ReadLine();
 			if (result)
 				return 0;
 			else return -1;
