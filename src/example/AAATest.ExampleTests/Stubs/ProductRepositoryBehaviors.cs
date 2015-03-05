@@ -30,7 +30,6 @@ namespace AAATest.ExampleTests.Stubs {
             };
 
 			Arrange((IRepository r) => r.Query<Product>())
-				//.Returns(base.Mock < IQuery<Product>>());
 				.Returns<IQuery<Product>>();
 			IncludeCategory = Arrange((IQuery<Product> x) => x.Include(Any<Expression<Func<Product, Category>>>()))
 					.ReturnsSelf();
