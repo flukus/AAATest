@@ -3,7 +3,7 @@
 
 
 	<!-- include local settings if it exists -->
-	<include buildfile="local.settings" failonerror="false" />
+	<include buildfile="local.properties" failonerror="false" />
 
 	<!-- properties for the local machine -->
 	<property name="MSBuild" value="msbuild" overwrite="false" />

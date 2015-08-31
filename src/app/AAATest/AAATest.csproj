@@ -56,6 +56,7 @@
     <Compile Include="Assert.cs" />
     <Compile Include="AssertEqual.cs" />
     <Compile Include="Framework\Arranger.cs" />
+    <Compile Include="IAssert.cs" />
     <Compile Include="Mock\BehaviorCollection.cs" />
     <Compile Include="Framework\Exceptions\AssertException.cs" />
     <Compile Include="Framework\Exceptions\TestException.cs" />

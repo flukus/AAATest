@@ -21,8 +21,8 @@ src/test/AAATest.Test/obj/
 src/example/AAATest.ExampleTests/obj/
 src/app/AAATest.Console/bin/
 packages/
-src/app/AAATest.Console/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
 src/app/AAATest.Console/obj/
 *.user
 *.settings
 build/
+local.properties
